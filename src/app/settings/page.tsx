@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 
 export default function SettingsPage() {
   return (
-    <div className="container max-w-md mx-auto p-4">
+    <div className="container max-w-md mx-auto p-4 h-[calc(100vh-4rem)] overflow-y-auto">
       <Card>
         <CardHeader>
           <CardTitle>Settings</CardTitle>

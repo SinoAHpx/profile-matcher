@@ -96,7 +96,7 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="container max-w-4xl mx-auto h-[calc(100vh-8rem)] flex flex-col p-4">
+    <div className="container max-w-4xl mx-auto mb-8 flex flex-col p-4">
       {/* Header */}
       <div className="text-center mb-4">
         <div className="flex items-center justify-center gap-2 mb-2">
@@ -190,9 +190,9 @@ export default function ChatPage() {
             <Textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyPress={handleKeyPress}
+              onKeyPress={handleKeyPress} 
               placeholder="Ask me anything about team collaboration..."
-              className="min-h-[40px] max-h-[120px] resize-none"
+              className="min-h-[40px] max-h-[120px] text-nowrap resize-none"
               rows={1}
             />
             <Button

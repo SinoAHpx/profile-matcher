@@ -10,7 +10,7 @@ export default function ProfilePage() {
   const { profile } = useUserProfileStore();
 
   return (
-    <div className="container max-w-md mx-auto p-4">
+    <div className="container max-w-md mx-auto p-4 h-[calc(100vh-4rem)] overflow-y-auto">
       <Card>
         <CardHeader>
           <CardTitle>Profile</CardTitle>
