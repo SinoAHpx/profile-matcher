@@ -58,7 +58,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         
         authUtils.setAuthData(user, tokens);
         setUser(user);
-        router.push('/home');
+        
+        // Check if user has completed guide
+        const hasCompletedGuide = localStorage.getItem('userProfile');
+        if (hasCompletedGuide) {
+          router.push('/home');
+        } else {
+          router.push('/guide');
+        }
         return true;
       }
       
@@ -85,7 +92,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       authUtils.setAuthData(user, tokens);
       setUser(user);
-      router.push('/home');
+      // New users go to guide first
+      router.push('/guide');
       return true;
     } catch (error) {
       console.error('Registration error:', error);

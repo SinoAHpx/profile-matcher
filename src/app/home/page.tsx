@@ -13,7 +13,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="h-full bg-background">
       <header className="border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -44,7 +44,7 @@ export default function HomePage() {
           <Card>
             <CardHeader>
               <CardTitle>Welcome</CardTitle>
-              <CardDescription>You're successfully authenticated</CardDescription>
+              <CardDescription>Youre successfully authenticated</CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">

@@ -26,8 +26,8 @@ const navItems = [
 export function BottomNav() {
   const pathname = usePathname();
 
-  // Don't show bottom nav on auth routes
-  if (pathname.startsWith('/auth') || pathname === '/') {
+  // Don't show bottom nav on auth routes or guide
+  if (pathname.startsWith('/auth') || pathname === '/' || pathname === '/guide') {
     return null;
   }
 
