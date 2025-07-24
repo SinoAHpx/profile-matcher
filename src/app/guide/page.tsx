@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUserProfileStore } from '@/stores/user-profile';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -23,21 +24,21 @@ const ageRanges = [
 export default function GuidePage() {
   const router = useRouter();
   const { user } = useAuth();
+  const { profile, completeGuide, hasCompletedGuide } = useUserProfileStore();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    gender: '',
-    ageRange: '',
-    hobbies: [] as string[],
-    bio: ''
+    gender: profile?.gender || '',
+    ageRange: profile?.ageRange || '',
+    hobbies: profile?.hobbies || [] as string[],
+    bio: profile?.bio || ''
   });
 
   useEffect(() => {
     // Redirect if guide is already completed
-    const hasCompletedGuide = localStorage.getItem('userProfile');
-    if (hasCompletedGuide) {
+    if (hasCompletedGuide()) {
       router.push('/home');
     }
-  }, [router]);
+  }, [router, hasCompletedGuide]);
 
   const handleHobbyToggle = (hobby: string) => {
     setFormData(prev => ({
@@ -52,12 +53,8 @@ export default function GuidePage() {
     if (step < 3) {
       setStep(step + 1);
     } else {
-      // Save to localStorage and redirect
-      localStorage.setItem('userProfile', JSON.stringify({
-        ...formData,
-        email: user?.email,
-        completed: true
-      }));
+      // Save to Zustand store and redirect
+      completeGuide(formData);
       router.push('/home');
     }
   };

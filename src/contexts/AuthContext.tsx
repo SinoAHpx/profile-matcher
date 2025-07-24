@@ -1,7 +1,9 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/stores/auth';
+import { useUserProfileStore } from '@/stores/user-profile';
 import { authUtils, User } from '@/lib/auth';
 
 interface AuthContextType {
@@ -15,8 +17,8 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { user, isLoading, setUser, setLoading, setTokens, logout: logoutStore } = useAuthStore();
+  const { hasCompletedGuide } = useUserProfileStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.error('Error checking auth:', error);
       setUser(null);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -58,10 +60,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         
         authUtils.setAuthData(user, tokens);
         setUser(user);
+        setTokens(tokens.accessToken, tokens.refreshToken);
         
         // Check if user has completed guide
-        const hasCompletedGuide = localStorage.getItem('userProfile');
-        if (hasCompletedGuide) {
+        if (hasCompletedGuide()) {
           router.push('/home');
         } else {
           router.push('/guide');
@@ -92,6 +94,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       authUtils.setAuthData(user, tokens);
       setUser(user);
+      setTokens(tokens.accessToken, tokens.refreshToken);
       // New users go to guide first
       router.push('/guide');
       return true;
@@ -103,7 +106,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = () => {
     authUtils.clearAuth();
-    setUser(null);
+    logoutStore();
     router.push('/auth');
   };
 
