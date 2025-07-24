@@ -1,22 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-
-type User = {
-  email: string;
-  password: string;
-  name: string;
-};
-
-// Simulated user storage
-const users: User[] = [
-  { email: 'demo@example.com', password: 'password123', name: 'Demo User' }
-];
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -27,8 +17,8 @@ export default function AuthPage() {
     confirmPassword: ''
   });
   const [message, setMessage] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { login, register } = useAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -37,77 +27,45 @@ export default function AuthPage() {
     });
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const user = users.find(u => u.email === formData.email && u.password === formData.password);
+    setIsLoading(true);
+    setMessage('');
     
-    if (user) {
-      setCurrentUser(user);
-      setIsLoggedIn(true);
-      setMessage('Login successful!');
-    } else {
-      setMessage('Invalid email or password');
+    try {
+      const success = await login(formData.email, formData.password);
+      if (!success) {
+        setMessage('Invalid email or password');
+      }
+    } catch (error) {
+      setMessage('An error occurred during login');
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+    setMessage('');
     
     if (formData.password !== formData.confirmPassword) {
       setMessage('Passwords do not match');
+      setIsLoading(false);
       return;
     }
 
-    if (users.find(u => u.email === formData.email)) {
-      setMessage('User already exists');
-      return;
+    try {
+      const success = await register(formData.name, formData.email, formData.password);
+      if (!success) {
+        setMessage('Registration failed');
+      }
+    } catch (error) {
+      setMessage('An error occurred during registration');
+    } finally {
+      setIsLoading(false);
     }
-
-    const newUser: User = {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password
-    };
-
-    users.push(newUser);
-    setCurrentUser(newUser);
-    setIsLoggedIn(true);
-    setMessage('Registration successful!');
   };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setCurrentUser(null);
-    setFormData({ name: '', email: '', password: '', confirmPassword: '' });
-    setMessage('');
-  };
-
-  if (isLoggedIn && currentUser) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background p-4">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-light">Welcome back</CardTitle>
-            <CardDescription className="text-muted-foreground">
-              {currentUser.name}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="text-center">
-            <p className="text-sm text-muted-foreground">{currentUser.email}</p>
-          </CardContent>
-          <CardFooter>
-            <Button 
-              onClick={handleLogout} 
-              variant="outline" 
-              className="w-full"
-            >
-              Sign out
-            </Button>
-          </CardFooter>
-        </Card>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
@@ -199,8 +157,9 @@ export default function AuthPage() {
             <Button 
               type="submit" 
               className="w-full h-10 font-normal"
+              disabled={isLoading}
             >
-              {isLogin ? 'Sign in' : 'Create account'}
+              {isLoading ? 'Processing...' : (isLogin ? 'Sign in' : 'Create account')}
             </Button>
           </form>
         </CardContent>
