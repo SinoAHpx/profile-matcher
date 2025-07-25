@@ -34,10 +34,10 @@ export default function TeamPage() {
     return (
       <div className="container max-w-6xl mx-auto p-4 space-y-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold">Team not found</h1>
+          <h1 className="text-2xl font-bold">团队未找到</h1>
           <Button onClick={() => router.back()} className="mt-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Go Back
+            返回
           </Button>
         </div>
       </div>
@@ -62,7 +62,7 @@ export default function TeamPage() {
       <div className="space-y-4">
         <Button variant="ghost" onClick={() => router.back()} className="mb-4">
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Campaign
+          返回活动
         </Button>
 
         <Card className="overflow-hidden">
@@ -75,12 +75,12 @@ export default function TeamPage() {
                 <div className="flex items-center gap-4 text-sm">
                   <div className="flex items-center gap-1">
                     <Users className="h-4 w-4" />
-                    <span>{team.members.length} / {team.maxMembers} members</span>
+                    <span>{team.members.length} / {team.maxMembers} 名成员</span>
                   </div>
                   {team.isRecommended && (
                     <div className="flex items-center gap-1 text-yellow-600">
                       <Sparkles className="h-4 w-4" />
-                      <span>Recommended</span>
+                      <span>推荐</span>
                     </div>
                   )}
                 </div>
@@ -88,14 +88,14 @@ export default function TeamPage() {
 
               <div className="flex flex-col items-end gap-2">
                 <div className="text-right">
-                  <p className="text-sm text-muted-foreground">Open spots</p>
+                  <p className="text-sm text-muted-foreground">空余名额</p>
                   <p className="text-2xl font-bold">{openSpots}</p>
                 </div>
 
                 {openSpots > 0 && (
                   <Button onClick={handleJoinTeam} className="w-full">
                     <Plus className="h-4 w-4 mr-2" />
-                    Join Team
+                    加入团队
                   </Button>
                 )}
               </div>
@@ -105,7 +105,7 @@ export default function TeamPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Team Skills & Tags</CardTitle>
+            <CardTitle>团队技能和标签</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-2">
@@ -118,8 +118,8 @@ export default function TeamPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Team Members</CardTitle>
-            <CardDescription>{team.members.length} members in this team</CardDescription>
+            <CardTitle>团队成员</CardTitle>
+            <CardDescription>该团队有 {team.members.length} 名成员</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -138,7 +138,7 @@ export default function TeamPage() {
                     <div className="flex-1">
                       <h3 className="font-semibold">{member.name}</h3>
                       <p className="text-sm text-muted-foreground">{member.role}</p>
-                      <p className="text-xs text-muted-foreground">Joined {new Date(member.joinedAt).toLocaleDateString()}</p>
+                      <p className="text-xs text-muted-foreground">加入于 {new Date(member.joinedAt).toLocaleDateString()}</p>
                     </div>
 
                     <div className="text-right">
@@ -161,13 +161,13 @@ export default function TeamPage() {
         {openSpots > 0 && (
           <Card className="bg-muted/50">
             <CardContent className="text-center py-6">
-              <h3 className="text-lg font-semibold mb-2">Ready to join {team.name}?</h3>
+              <h3 className="text-lg font-semibold mb-2">准备好加入 {team.name} 了吗？</h3>
               <p className="text-muted-foreground mb-4">
-                There {openSpots === 1 ? 'is' : 'are'} {openSpots} open {openSpots === 1 ? 'spot' : 'spots'} available.
+                现在有 {openSpots} 个空余名额。
               </p>
               <Button onClick={handleJoinTeam} size="lg">
                 <Plus className="h-4 w-4 mr-2" />
-                Join Team
+                加入团队
               </Button>
             </CardContent>
           </Card>

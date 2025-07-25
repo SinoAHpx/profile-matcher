@@ -8,22 +8,22 @@ import { cn } from '@/lib/utils';
 const navItems = [
   {
     href: '/home',
-    label: 'Home',
+    label: '主页',
     icon: Home,
   },
   {
     href: '/chat',
-    label: 'Chat',
+    label: '聊天',
     icon: MessageSquare,
   },
   {
     href: '/profile',
-    label: 'Profile',
+    label: '个人资料',
     icon: User,
   },
   {
     href: '/settings',
-    label: 'Settings',
+    label: '设置',
     icon: Settings,
   },
 ];

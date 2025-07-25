@@ -19,17 +19,17 @@ interface Suggestion {
 const quickSuggestions: Suggestion[] = [
   {
     id: '1',
-    text: 'Help me plan a team project',
+    text: '帮我规划一个团队项目',
     icon: <Wand2 className="h-4 w-4" />
   },
   {
     id: '2',
-    text: 'Suggest team roles for a web app',
+    text: '为 Web 应用建议团队角色',
     icon: <Brain className="h-4 w-4" />
   },
   {
     id: '3',
-    text: 'How to improve team collaboration?',
+    text: '如何改善团队协作？',
     icon: <MessageCircle className="h-4 w-4" />
   }
 ];
@@ -50,7 +50,7 @@ export default function ChatPage() {
   useEffect(() => {
     if (messages.length === 0) {
       addMessage({
-        content: "Hello! I'm your AI assistant here to help with team collaboration, project planning, and campaign strategy. How can I assist you today?",
+        content: "你好！我是你的 AI 助手，可以帮助你进行团队协作、项目规划和活动策略。今天我能为你做些什么？",
         role: 'assistant',
       });
     }
@@ -70,10 +70,10 @@ export default function ChatPage() {
     // Simulate AI response (in real app, this would be an API call)
     setTimeout(() => {
       const responses = [
-        "Great question! For team collaboration, I'd recommend establishing clear communication channels and regular check-ins. Consider using tools like daily standups and shared project boards.",
-        "For project planning, start with defining your MVP (Minimum Viable Product) and break it down into smaller, manageable tasks. Use the SMART framework for goal setting.",
-        "Team roles for a web app typically include: Frontend Developer, Backend Developer, UI/UX Designer, and Product Manager. Consider your team's strengths when assigning roles.",
-        "To improve team collaboration, implement these practices: 1) Daily standups 2) Weekly retrospectives 3) Clear documentation 4) Regular feedback sessions 5) Shared goals and metrics."
+        "好问题！对于团队协作，我建议建立清晰的沟通渠道和定期的签到。可以考虑使用每日站会和共享项目板等工具。",
+        "对于项目规划，首先要定义你的 MVP（最小可行产品），然后将其分解为更小、更易于管理的任务。使用 SMART 框架设定目标。",
+        "Web 应用的团队角色通常包括：前端开发人员、后端开发人员、UI/UX 设计师和产品经理。在分配角色时，请考虑团队成员的优势。",
+        "为了改善团队协作，请实施以下实践：1) 每日站会 2) 每周回顾 3) 清晰的文档 4) 定期反馈会议 5) 共享目标和指标。"
       ];
 
       addMessage({
@@ -101,10 +101,10 @@ export default function ChatPage() {
       <div className="text-center mb-4">
         <div className="flex items-center justify-center gap-2 mb-2">
           <Bot className="h-6 w-6 text-primary" />
-          <h1 className="text-2xl font-bold">AI Assistant</h1>
+          <h1 className="text-2xl font-bold">AI 助手</h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          Ask me anything about team collaboration, project planning, or campaign strategy
+          向我询问有关团队协作、项目规划或活动策略的任何问题
         </p>
       </div>
 
@@ -176,7 +176,7 @@ export default function ChatPage() {
                 <div className="bg-muted rounded-lg px-4 py-2">
                   <div className="flex items-center gap-1">
                     <Sparkles className="h-3 w-3 animate-pulse" />
-                    <span className="text-sm text-muted-foreground">AI is thinking...</span>
+                    <span className="text-sm text-muted-foreground">AI 正在思考...</span>
                   </div>
                 </div>
               </div>
@@ -191,7 +191,7 @@ export default function ChatPage() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress} 
-              placeholder="Ask me anything about team collaboration..."
+              placeholder="向我询问有关团队协作的任何问题..."
               className="min-h-[40px] max-h-[120px] text-nowrap resize-none"
               rows={1}
             />
@@ -210,7 +210,7 @@ export default function ChatPage() {
       {/* Footer */}
       <div className="text-center mt-2">
         <p className="text-xs text-muted-foreground">
-          Powered by AI • Responses are simulated for demo purposes
+          由 AI 驱动 • 响应为演示目的模拟
         </p>
       </div>
     </div>

@@ -39,9 +39,9 @@ export default function CreateTeamPage() {
     return (
       <div className="container max-w-4xl mx-auto p-4 space-y-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold">Campaign not found</h1>
+          <h1 className="text-2xl font-bold">活动未找到</h1>
           <Button onClick={() => router.push('/home')} className="mt-4">
-            Back to Campaigns
+            返回活动列表
           </Button>
         </div>
       </div>
@@ -65,11 +65,11 @@ export default function CreateTeamPage() {
     // Create a mock person for the current user
     const currentUserPerson = {
       id: user?.id || 'current-user',
-      name: user?.name || 'Current User',
+      name: user?.name || '当前用户',
       avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email || 'user'}`,
-      role: 'Team Lead',
+      role: '团队负责人',
       skills: ['Management', 'Leadership'],
-      bio: 'Team creator and project lead',
+      bio: '团队创建者和项目负责人',
       joinedAt: new Date().toISOString(),
     };
 
@@ -94,41 +94,41 @@ export default function CreateTeamPage() {
         className="mb-4"
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
-        Back to Campaign
+        返回活动
       </Button>
 
       <Card>
         <CardHeader>
-          <CardTitle>Create New Team</CardTitle>
+          <CardTitle>创建新团队</CardTitle>
           <CardDescription>
-            Create a team for {campaign.title}
+            为 {campaign.title} 创建一个团队
           </CardDescription>
         </CardHeader>
         
         <CardContent className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="name">Team Name</Label>
+            <Label htmlFor="name">团队名称</Label>
             <Input
               id="name"
               value={formData.name}
               onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-              placeholder="Enter team name"
+              placeholder="输入团队名称"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Team Description</Label>
+            <Label htmlFor="description">团队描述</Label>
             <Textarea
               id="description"
               value={formData.description}
               onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-              placeholder="Describe your team's goals and focus"
+              placeholder="描述您团队的目标和重点"
               rows={4}
             />
           </div>
 
           <div className="space-y-2">
-            <Label>Team Size</Label>
+            <Label>团队规模</Label>
             <div className="flex items-center gap-4">
               <Button
                 type="button"
@@ -159,12 +159,12 @@ export default function CreateTeamPage() {
               </Button>
             </div>
             <p className="text-sm text-muted-foreground">
-              Maximum number of team members
+              团队最大成员数
             </p>
           </div>
 
           <div className="space-y-2">
-            <Label>Tags</Label>
+            <Label>标签</Label>
             <div className="flex flex-wrap gap-2">
               {availableTags.map((tag) => (
                 <Badge
@@ -178,28 +178,28 @@ export default function CreateTeamPage() {
               ))}
             </div>
             <p className="text-sm text-muted-foreground">
-              Select relevant skills and technologies for your team
+              为您的团队选择相关的技能和技术
             </p>
           </div>
 
           <div className="pt-4 space-y-4">
             <Card className="bg-muted/50">
               <CardHeader>
-                <CardTitle className="text-lg">Team Preview</CardTitle>
+                <CardTitle className="text-lg">团队预览</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2 text-sm">
                   <div>
-                    <span className="font-medium">Name:</span> {formData.name || "Team Name"}
+                    <span className="font-medium">名称:</span> {formData.name || "团队名称"}
                   </div>
                   <div>
-                    <span className="font-medium">Description:</span> {formData.description || "Team description"}
+                    <span className="font-medium">描述:</span> {formData.description || "团队描述"}
                   </div>
                   <div>
-                    <span className="font-medium">Max Members:</span> {formData.maxMembers}
+                    <span className="font-medium">最大成员数:</span> {formData.maxMembers}
                   </div>
                   <div>
-                    <span className="font-medium">Tags:</span> {formData.tags.join(', ') || "None selected"}
+                    <span className="font-medium">标签:</span> {formData.tags.join(', ') || "未选择"}
                   </div>
                 </div>
               </CardContent>
@@ -211,14 +211,14 @@ export default function CreateTeamPage() {
                 onClick={() => router.push(`/campaigns/${campaignId}`)}
                 className="flex-1"
               >
-                Cancel
+                取消
               </Button>
               <Button 
                 onClick={handleSubmit}
                 disabled={!formData.name.trim() || !formData.description.trim()}
                 className="flex-1"
               >
-                Create Team
+                创建团队
               </Button>
             </div>
           </div>

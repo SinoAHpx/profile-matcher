@@ -38,9 +38,9 @@ export default function CampaignPage() {
     return (
       <div className="container max-w-6xl mx-auto p-4 space-y-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold">Campaign not found</h1>
+          <h1 className="text-2xl font-bold">活动未找到</h1>
           <Button onClick={() => router.push('/home')} className="mt-4">
-            Back to Campaigns
+            返回活动列表
           </Button>
         </div>
       </div>
@@ -70,7 +70,7 @@ export default function CampaignPage() {
           <div className="absolute bottom-4 left-4 text-white">
             <Badge className="mb-2">{campaign.category}</Badge>
             <h1 className="text-3xl font-bold">{campaign.title}</h1>
-            <p className="text-sm opacity-90">Organized by {campaign.organizer}</p>
+            <p className="text-sm opacity-90">由 {campaign.organizer} 组织</p>
           </div>
         </div>
 
@@ -79,13 +79,13 @@ export default function CampaignPage() {
             <CardHeader className="pb-3">
               <CardTitle className="text-lg flex items-center gap-2">
                 <Calendar className="h-5 w-5" />
-                Timeline
+                时间线
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-0">
               <div className="text-sm space-y-1">
-                <div>Start: {new Date(campaign.startDate).toLocaleDateString()}</div>
-                <div>End: {new Date(campaign.endDate).toLocaleDateString()}</div>
+                <div>开始: {new Date(campaign.startDate).toLocaleDateString()}</div>
+                <div>结束: {new Date(campaign.endDate).toLocaleDateString()}</div>
               </div>
             </CardContent>
           </Card>
@@ -94,13 +94,13 @@ export default function CampaignPage() {
             <CardHeader className="pb-3">
               <CardTitle className="text-lg flex items-center gap-2">
                 <Users className="h-5 w-5" />
-                Teams
+                团队
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-0">
               <div className="text-sm space-y-1">
-                <div>{campaign.totalTeams} teams joined</div>
-                <div>{campaign.maxTeams - campaign.totalTeams} spots left</div>
+                <div>{campaign.totalTeams} 个团队已加入</div>
+                <div>{campaign.maxTeams - campaign.totalTeams} 个名额剩余</div>
               </div>
             </CardContent>
           </Card>
@@ -109,7 +109,7 @@ export default function CampaignPage() {
             <CardHeader className="pb-3">
               <CardTitle className="text-lg flex items-center gap-2">
                 <Tag className="h-5 w-5" />
-                Tags
+                标签
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-0">
@@ -130,10 +130,10 @@ export default function CampaignPage() {
       {/* Teams Section */}
       <div className="space-y-4">
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold">Teams</h2>
+          <h2 className="text-2xl font-bold">团队</h2>
           <Button onClick={handleCreateTeam}>
             <Plus className="h-4 w-4 mr-2" />
-            Create Team
+            创建团队
           </Button>
         </div>
 
@@ -141,11 +141,11 @@ export default function CampaignPage() {
           <TabsList className="grid w-full max-w-md grid-cols-2">
             <TabsTrigger value="recommended" className="flex items-center gap-2">
               <Star className="h-4 w-4" />
-              Recommended
+              推荐
             </TabsTrigger>
             <TabsTrigger value="all" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
-              All Teams
+              所有团队
             </TabsTrigger>
           </TabsList>
 
@@ -157,7 +157,7 @@ export default function CampaignPage() {
             ) : (
               <Card>
                 <CardContent className="text-center py-8">
-                  <p className="text-muted-foreground">No recommended teams yet</p>
+                  <p className="text-muted-foreground">暂无推荐团队</p>
                 </CardContent>
               </Card>
             )}
@@ -171,7 +171,7 @@ export default function CampaignPage() {
             ) : (
               <Card>
                 <CardContent className="text-center py-8">
-                  <p className="text-muted-foreground">No teams available yet</p>
+                  <p className="text-muted-foreground">暂无可用团队</p>
                 </CardContent>
               </Card>
             )}
@@ -196,7 +196,7 @@ function TeamCard({ team, onClick }: { team: any; onClick: () => void }) {
           {team.isRecommended && (
             <Badge variant="secondary" className="flex items-center gap-1">
               <Star className="h-3 w-3" />
-              Recommended
+              推荐
             </Badge>
           )}
         </div>
@@ -204,7 +204,7 @@ function TeamCard({ team, onClick }: { team: any; onClick: () => void }) {
       
       <CardContent className="space-y-3">
         <div className="flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">Members</span>
+          <span className="text-muted-foreground">成员</span>
           <span className="font-medium">{team.members.length} / {team.maxMembers}</span>
         </div>
         

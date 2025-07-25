@@ -21,7 +21,7 @@ export default function HomePage() {
   }, [initializeMockData]);
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString('zh-CN', {
       month: 'short',
       day: 'numeric',
       year: 'numeric'
@@ -35,9 +35,9 @@ export default function HomePage() {
   return (
     <div className="container max-w-6xl mx-auto p-4 space-y-6 h-[calc(100vh-4rem)] overflow-y-auto">
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Campaigns</h1>
+        <h1 className="text-3xl font-bold tracking-tight">活动</h1>
         <p className="text-muted-foreground">
-          Join exciting campaigns and collaborate with talented teams
+          加入激动人心的活动，与才华横溢的团队合作
         </p>
       </div>
 
@@ -53,7 +53,7 @@ export default function HomePage() {
 
       {campaigns.length === 0 && (
         <div className="text-center py-12">
-          <div className="text-muted-foreground">No campaigns available</div>
+          <div className="text-muted-foreground">暂无活动</div>
         </div>
       )}
     </div>
@@ -90,18 +90,18 @@ function CampaignCard({ campaign, onClick }: { campaign: Campaign; onClick: () =
       <CardContent className="space-y-4">
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Calendar className="h-4 w-4" />
-          <span>Ends {formatDate(campaign.endDate)}</span>
+          <span>结束于 {formatDate(campaign.endDate)}</span>
         </div>
 
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Users className="h-4 w-4" />
-          <span>{campaign.totalTeams} / {campaign.maxTeams} teams</span>
+          <span>{campaign.totalTeams} / {campaign.maxTeams} 团队</span>
         </div>
 
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Teams</span>
-            <span className="font-medium">{progress.toFixed(0)}% full</span>
+            <span className="text-muted-foreground">团队</span>
+            <span className="font-medium">已满 {progress.toFixed(0)}%</span>
           </div>
           <Progress value={progress} className="h-2" />
         </div>
@@ -115,7 +115,7 @@ function CampaignCard({ campaign, onClick }: { campaign: Campaign; onClick: () =
           ))}
           {campaign.tags.length > 3 && (
             <Badge variant="outline" className="text-xs">
-              +{campaign.tags.length - 3} more
+              +还有 {campaign.tags.length - 3} 个
             </Badge>
           )}
         </div>
@@ -123,7 +123,7 @@ function CampaignCard({ campaign, onClick }: { campaign: Campaign; onClick: () =
 
       <CardFooter>
         <Button className="w-full" variant="ghost">
-          View Campaign
+          查看活动
           <ChevronRight className="h-4 w-4 ml-2" />
         </Button>
       </CardFooter>
@@ -132,7 +132,7 @@ function CampaignCard({ campaign, onClick }: { campaign: Campaign; onClick: () =
 }
 
 function formatDate(dateString: string) {
-  return new Date(dateString).toLocaleDateString('en-US', {
+  return new Date(dateString).toLocaleDateString('zh-CN', {
     month: 'short',
     day: 'numeric',
     year: 'numeric'

@@ -37,10 +37,10 @@ export default function AuthPage() {
     try {
       const success = await login(formData.email, formData.password);
       if (!success) {
-        setMessage('Invalid email or password');
+        setMessage('电子邮件或密码无效');
       }
     } catch (error) {
-      setMessage('An error occurred during login');
+      setMessage('登录时发生错误');
     } finally {
       setIsLoading(false);
     }
@@ -52,7 +52,7 @@ export default function AuthPage() {
     setMessage('');
     
     if (formData.password !== formData.confirmPassword) {
-      setMessage('Passwords do not match');
+      setMessage('密码不匹配');
       setIsLoading(false);
       return;
     }
@@ -60,10 +60,10 @@ export default function AuthPage() {
     try {
       const success = await register(formData.name, formData.email, formData.password);
       if (!success) {
-        setMessage('Registration failed');
+        setMessage('注册失败');
       }
     } catch (error) {
-      setMessage('An error occurred during registration');
+      setMessage('注册时发生错误');
     } finally {
       setIsLoading(false);
     }
@@ -84,7 +84,7 @@ export default function AuthPage() {
       case 'demo':
         user = {
           email: 'demo@example.com',
-          name: 'Demo User',
+          name: '演示用户',
           id: 'demo-user-id'
         };
         tokens = {
@@ -95,7 +95,7 @@ export default function AuthPage() {
       case 'admin':
         user = {
           email: 'admin@example.com',
-          name: 'Admin User',
+          name: '管理员用户',
           id: 'admin-user-id'
         };
         tokens = {
@@ -107,7 +107,7 @@ export default function AuthPage() {
       default:
         user = {
           email: 'user@example.com',
-          name: 'Regular User',
+          name: '普通用户',
           id: 'user-id-' + Date.now()
         };
         tokens = {
@@ -134,10 +134,10 @@ export default function AuthPage() {
       <Card className="w-full max-w-md border-0 shadow-none">
         <CardHeader className="text-center space-y-1">
           <CardTitle className="text-2xl font-light">
-            {isLogin ? 'Welcome back' : 'Create account'}
+            {isLogin ? '欢迎回来' : '创建帐户'}
           </CardTitle>
           <CardDescription className="text-muted-foreground">
-            {isLogin ? 'Sign in to your account' : 'Enter your details to create your account'}
+            {isLogin ? '登录您的帐户' : '输入您的详细信息以创建您的帐户'}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -145,7 +145,7 @@ export default function AuthPage() {
             {!isLogin && (
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-sm font-normal">
-                  Name
+                  名称
                 </Label>
                 <Input
                   id="name"
@@ -154,7 +154,7 @@ export default function AuthPage() {
                   required={!isLogin}
                   value={formData.name}
                   onChange={handleInputChange}
-                  placeholder="John Doe"
+                  placeholder="张三"
                   className="h-10"
                 />
               </div>
@@ -162,7 +162,7 @@ export default function AuthPage() {
 
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-normal">
-                Email
+                电子邮件
               </Label>
               <Input
                 id="email"
@@ -171,14 +171,14 @@ export default function AuthPage() {
                 required
                 value={formData.email}
                 onChange={handleInputChange}
-                placeholder="john@example.com"
+                placeholder="zhangsan@example.com"
                 className="h-10"
               />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="password" className="text-sm font-normal">
-                Password
+                密码
               </Label>
               <Input
                 id="password"
@@ -195,7 +195,7 @@ export default function AuthPage() {
             {!isLogin && (
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword" className="text-sm font-normal">
-                  Confirm password
+                  确认密码
                 </Label>
                 <Input
                   id="confirmPassword"
@@ -221,7 +221,7 @@ export default function AuthPage() {
               className="w-full h-10 font-normal"
               disabled={isLoading}
             >
-              {isLoading ? 'Processing...' : (isLogin ? 'Sign in' : 'Create account')}
+              {isLoading ? '处理中...' : (isLogin ? '登录' : '创建帐户')}
             </Button>
           </form>
         </CardContent>
@@ -235,13 +235,13 @@ export default function AuthPage() {
               setFormData({ name: '', email: '', password: '', confirmPassword: '' });
             }}
           >
-            {isLogin ? "Don't have an account?" : "Already have an account?"}
+            {isLogin ? "没有帐户？" : "已有帐户？"}
           </Button>
           
           {process.env.NODE_ENV === 'development' && (
             <div className="w-full space-y-2 pt-2 border-t border-border">
               <p className="text-xs text-center text-muted-foreground">
-                Development: Skip authentication
+                开发：跳过身份验证
               </p>
               <div className="flex gap-2">
                 <Button
@@ -250,7 +250,7 @@ export default function AuthPage() {
                   className="flex-1 h-8 text-xs"
                   onClick={() => skipAuth('demo')}
                 >
-                  Demo User
+                  演示用户
                 </Button>
                 <Button
                   variant="outline"
@@ -258,7 +258,7 @@ export default function AuthPage() {
                   className="flex-1 h-8 text-xs"
                   onClick={() => skipAuth('admin')}
                 >
-                  Admin
+                  管理员
                 </Button>
                 <Button
                   variant="outline"
@@ -266,7 +266,7 @@ export default function AuthPage() {
                   className="flex-1 h-8 text-xs"
                   onClick={() => skipAuth('user')}
                 >
-                  Regular User
+                  普通用户
                 </Button>
               </div>
             </div>
@@ -274,7 +274,7 @@ export default function AuthPage() {
           
           {isLogin && (
             <p className="text-xs text-center text-muted-foreground">
-              Demo: demo@example.com / password123
+              演示: demo@example.com / password123
             </p>
           )}
         </CardFooter>

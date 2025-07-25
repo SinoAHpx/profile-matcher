@@ -24,10 +24,10 @@ export default function PersonPage() {
     return (
       <div className="container max-w-4xl mx-auto p-4 space-y-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold">Person not found</h1>
+          <h1 className="text-2xl font-bold">未找到成员</h1>
           <Button onClick={() => router.back()} className="mt-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Go Back
+            返回
           </Button>
         </div>
       </div>
@@ -42,7 +42,7 @@ export default function PersonPage() {
         className="mb-4"
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
-        Back to {team.name}
+        返回 {team.name}
       </Button>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -73,7 +73,7 @@ export default function PersonPage() {
 
                 <Button className="w-full">
                   <Mail className="h-4 w-4 mr-2" />
-                  Contact
+                  联系
                 </Button>
               </div>
             </CardContent>
@@ -81,7 +81,7 @@ export default function PersonPage() {
 
           <Card className="mt-4">
             <CardHeader>
-              <CardTitle className="text-lg">Info</CardTitle>
+              <CardTitle className="text-lg">信息</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-center gap-2 text-sm">
@@ -90,11 +90,11 @@ export default function PersonPage() {
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Calendar className="h-4 w-4 text-muted-foreground" />
-                <span>Joined {new Date(person.joinedAt).toLocaleDateString()}</span>
+                <span>加入于 {new Date(person.joinedAt).toLocaleDateString()}</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <MapPin className="h-4 w-4 text-muted-foreground" />
-                <span>Remote</span>
+                <span>远程</span>
               </div>
             </CardContent>
           </Card>
@@ -104,8 +104,8 @@ export default function PersonPage() {
         <div className="lg:col-span-2 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>About</CardTitle>
-              <CardDescription>Learn more about {person.name}</CardDescription>
+              <CardTitle>关于</CardTitle>
+              <CardDescription>了解更多关于 {person.name}</CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">{person.bio}</p>
@@ -114,8 +114,8 @@ export default function PersonPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Skills & Expertise</CardTitle>
-              <CardDescription>Professional skills and areas of expertise</CardDescription>
+              <CardTitle>技能和专长</CardTitle>
+              <CardDescription>专业技能和专业领域</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-3">
@@ -131,8 +131,8 @@ export default function PersonPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Team Information</CardTitle>
-              <CardDescription>Current team affiliation</CardDescription>
+              <CardTitle>团队信息</CardTitle>
+              <CardDescription>当前团队归属</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
@@ -144,7 +144,7 @@ export default function PersonPage() {
                   variant="outline" 
                   onClick={() => router.push(`/teams/${teamId}`)}
                 >
-                  View Team
+                  查看团队
                 </Button>
               </div>
             </CardContent>
@@ -152,15 +152,15 @@ export default function PersonPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
-              <CardDescription>Latest contributions and updates</CardDescription>
+              <CardTitle>最近活动</CardTitle>
+              <CardDescription>最新贡献和更新</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 bg-green-500 rounded-full mt-2" />
                   <div>
-                    <p className="text-sm font-medium">Joined {team.name}</p>
+                    <p className="text-sm font-medium">加入了 {team.name}</p>
                     <p className="text-xs text-muted-foreground">
                       {new Date(person.joinedAt).toLocaleDateString()}
                     </p>
@@ -169,9 +169,9 @@ export default function PersonPage() {
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 bg-blue-500 rounded-full mt-2" />
                   <div>
-                    <p className="text-sm font-medium">Skills updated</p>
+                    <p className="text-sm font-medium">技能已更新</p>
                     <p className="text-xs text-muted-foreground">
-                      Added expertise in {person.skills[0]} and {person.skills[1]}
+                      增加了 {person.skills[0]} 和 {person.skills[1]} 方面的专长
                     </p>
                   </div>
                 </div>
