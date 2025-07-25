@@ -5,6 +5,7 @@ interface BasicInfo {
   name: string;
   age: string;
   location: string;
+  avatar: string | null;
 }
 
 interface AboutYou {
@@ -42,6 +43,7 @@ const initialBasicInfo: BasicInfo = {
   name: '',
   age: '',
   location: '',
+  avatar: null,
 };
 
 const initialAboutYou: AboutYou = {

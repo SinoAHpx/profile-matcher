@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { useProfileStore } from "@/stores/profileStore";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function TestPage() {
   const { basicInfo, aboutYou, tellYou, resetProfile } = useProfileStore();
@@ -20,7 +21,15 @@ export default function TestPage() {
           <CardHeader>
             <CardTitle>Basic Info</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-2">
+          <CardContent className="space-y-4">
+            <div className="flex justify-center">
+              <Avatar className="w-20 h-20">
+                <AvatarImage src={basicInfo.avatar || undefined} alt="头像" />
+                <AvatarFallback className="bg-gray-100 text-gray-400 text-sm">
+                  头像
+                </AvatarFallback>
+              </Avatar>
+            </div>
             <p><strong>姓名:</strong> {basicInfo.name || "未填写"}</p>
             <p><strong>年龄:</strong> {basicInfo.age || "未填写"}</p>
             <p><strong>位置:</strong> {basicInfo.location || "未填写"}</p>

@@ -25,7 +25,7 @@ export default function Page() {
     }
 
     const handleNext = () => {
-        setBasicInfo({ name, age, location })
+        setBasicInfo({ name, age, location, avatar: avatarUrl })
         router.push('/about-you')
     }
 
