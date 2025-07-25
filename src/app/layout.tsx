@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "演示认证系统",
+  title: "Egho",
   description: "一个使用本地存储和 cookie 的简单演示认证系统",
 };
 
