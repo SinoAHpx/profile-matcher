@@ -9,7 +9,7 @@ interface StatusBarProps {
 export default function StatusBar({ className = "" }: StatusBarProps) {
   return (
     <div className={`fixed top-0 left-0 right-0 z-50 ${className}`}>
-      <div className="h-[62px] backdrop-blur-md flex items-center justify-between px-6 text-black font-bold text-xl">
+      <div className="h-[62px] flex items-center justify-between px-6 text-black font-bold text-xl">
         {/* Left side: Time */}
         <div className="flex items-center ml-8 space-x-2">
           <span className="text-sm font-extrabold tracking-wide">06:30</span>
