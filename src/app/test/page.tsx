@@ -7,7 +7,7 @@ export default function TestPage() {
   return (
     <div className="flex flex-col bg-[#FFF] justify-center h-full container mx-auto p-4 space-y-16">
       <Input className="h-15" placeholder="这个是input" />
-      <AdvancedInput className="h-15" title="hi">
+      <AdvancedInput dialogTitle="选择爱好" className="h-15" title="hi">
         <Hobbies />
       </AdvancedInput>
       <Button className="h-15">下一步</Button>
