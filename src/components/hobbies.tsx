@@ -89,8 +89,13 @@ const hobbiesData = {
   ],
 };
 
+import { useProfileStore } from "@/stores/profileStore";
+import { useMemo } from "react";
+
 export default function Hobbies() {
   const [activeTab, setActiveTab] = React.useState("mind");
+  const hobbies = useProfileStore((state) => state.aboutYou.hobbies);
+  const toggleHobby = useProfileStore((state) => state.toggleHobby);
 
   // Calculate the height for 4 rows (4 items per row * button height)
   const gridItemHeight = 44; // Approximate height of each button
@@ -138,7 +143,12 @@ export default function Hobbies() {
                   <Button
                     key={hobby.id}
                     variant="ghost"
-                    className="h-11 text-sm justify-center cursor-pointer text-[#CBCBCB] font-normal hover:bg-gray-100"
+                    className={`h-11 text-sm justify-center cursor-pointer font-normal transition-colors ${
+                      hobbies.includes(hobby.id)
+                        ? "bg-[#F4F4F4] text-[#333333]"
+                        : "text-[#CBCBCB] hover:bg-gray-100"
+                    }`}
+                    onClick={() => toggleHobby(hobby.id)}
                   >
                     {hobby.name}
                   </Button>
