@@ -30,7 +30,7 @@ export default function RootLayout({
         className={`h-full ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <StatusBar />
-        <div className="h-full pt-[62px]">{children}</div>
+        <div className="h-full">{children}</div>
         <GlobalBottomBar />
       </body>
     </html>
