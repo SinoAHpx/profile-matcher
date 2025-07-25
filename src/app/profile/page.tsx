@@ -4,8 +4,8 @@ import { Badge } from "@/components/ui/badge";
 
 const ProfilePage = () => {
   return (
-    <div className="bg-white text-gray-800 flex flex-col items-center font-sans p-8">
-      <div className="w-full max-w-md mx-auto">
+    <div className="bg-white text-gray-800 flex flex-col items-center font-sans p-10">
+      <div className="w-full max-w-md mx-auto space-y-4">
         {/* Profile Header */}
         <div className="flex items-center space-x-4 p-4">
           <div>
@@ -27,12 +27,13 @@ const ProfilePage = () => {
 
         {/* Bio */}
         <Card className="my-4 shadow-none border-none">
-          <CardContent className="p-4 bg-gray-50 rounded-lg">
+          <CardContent className="p-4 rounded-lg">
             <p className="text-gray-600 leading-relaxed">
             我来自一座黄沙漫天的小镇,毕业于湿热阴沉的海滨,base杭州,平时喜欢打羽毛球、健身,最近在研究3D打印机,有兴趣的友友可以联系我!
             </p>
           </CardContent>
         </Card>
+
 
         {/* Hobbies */}
         <div className="flex justify-start space-x-2 p-4 overflow-x-auto">
@@ -43,8 +44,11 @@ const ProfilePage = () => {
         </div>
 
         {/* Bottom Navigation */}
-        <div className="fixed bottom-0 left-0 right-0 bg-gray-100 p-4 rounded-t-2xl shadow-lg max-w-md mx-auto">
-            <div className="text-center text-gray-500 mb-4 text-sm">向上滑动以探索Echo</div>
+        <div className="bottom-0 left-0 right-0 p-6 rounded-t-2xl max-w-md"
+             style={{
+               background: 'linear-gradient(to top, #FFF 50%, rgba(92, 92, 92, 0.67))'
+             }}>
+            <div className="text-center text-[#FFF] mb-4 text-sm">向上滑动以探索Echo</div>
             <div className="flex justify-around items-center">
                 <div className="text-center">
                     <div className="w-16 h-16 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center mx-auto mb-2">
