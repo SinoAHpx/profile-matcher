@@ -10,16 +10,6 @@ import { Badge } from "@/components/ui/badge";
 
 export default function TestPage() {
   const { basicInfo, aboutYou, tellYou, resetProfile } = useProfileStore();
-  
-  const hobbiesData = [
-    { id: 1, name: "瑜伽" }, { id: 2, name: "游泳" }, { id: 3, name: "跑步" }, { id: 4, name: "健身" },
-    { id: 5, name: "舞蹈" }, { id: 19, name: "写作" }, { id: 20, name: "阅读" }, { id: 21, name: "摄影" },
-    { id: 35, name: "志愿服务" }, { id: 36, name: "音乐欣赏" }, { id: 51, name: "绘画" }, { id: 53, name: "编程" }
-  ];
-
-  const getHobbyNames = (hobbyIds: number[]) => {
-    return hobbyIds.map(id => hobbiesData.find(h => h.id === id)?.name || `未知爱好(${id})`);
-  };
 
   return (
     <div className="flex flex-col bg-[#FFF] justify-start overflow-auto container mx-auto p-4 pt-16 space-y-8">
@@ -46,7 +36,7 @@ export default function TestPage() {
               <strong>兴趣爱好:</strong>
               <div className="flex flex-wrap gap-2 mt-2">
                 {aboutYou.hobbies.length > 0 ? (
-                  getHobbyNames(aboutYou.hobbies).map((hobby, index) => (
+                  aboutYou.hobbies.map((hobby, index) => (
                     <Badge key={index} variant="secondary">{hobby}</Badge>
                   ))
                 ) : (
@@ -73,7 +63,7 @@ export default function TestPage() {
         <div className="border-t pt-4">
           <h2 className="text-lg font-semibold mb-4">功能测试</h2>
           
-          <AdvancedInput dialogTitle="选择爱好" className="h-15" title="选择爱好">
+          <AdvancedInput className="h-15" title="选择爱好">
             <Hobbies />
           </AdvancedInput>
           

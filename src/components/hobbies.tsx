@@ -90,7 +90,6 @@ const hobbiesData = {
 };
 
 import { useProfileStore } from "@/stores/profileStore";
-import { useMemo } from "react";
 
 export default function Hobbies() {
   const [activeTab, setActiveTab] = React.useState("mind");
@@ -144,11 +143,11 @@ export default function Hobbies() {
                     key={hobby.id}
                     variant="ghost"
                     className={`h-11 text-sm justify-center cursor-pointer font-normal transition-colors ${
-                      hobbies.includes(hobby.id)
+                      hobbies.includes(hobby.name)
                         ? "bg-[#F4F4F4] text-[#333333]"
                         : "text-[#CBCBCB] hover:bg-gray-100"
                     }`}
-                    onClick={() => toggleHobby(hobby.id)}
+                    onClick={() => toggleHobby(hobby.name)}
                   >
                     {hobby.name}
                   </Button>

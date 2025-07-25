@@ -8,7 +8,7 @@ interface BasicInfo {
 }
 
 interface AboutYou {
-  hobbies: number[];
+  hobbies: string[];
   mbti: string;
   quote: string;
 }
@@ -26,8 +26,8 @@ interface ProfileState {
   setBasicInfo: (info: Partial<BasicInfo>) => void;
   
   // Actions for about you
-  setHobbies: (hobbies: number[]) => void;
-  toggleHobby: (hobbyId: number) => void;
+  setHobbies: (hobbies: string[]) => void;
+  toggleHobby: (hobbyName: string) => void;
   setMbti: (mbti: string) => void;
   setQuote: (quote: string) => void;
   
@@ -71,12 +71,12 @@ export const useProfileStore = create<ProfileState>()(
           aboutYou: { ...state.aboutYou, hobbies },
         })),
       
-      toggleHobby: (hobbyId) =>
+      toggleHobby: (hobbyName) =>
         set((state) => {
           const currentHobbies = state.aboutYou.hobbies;
-          const newHobbies = currentHobbies.includes(hobbyId)
-            ? currentHobbies.filter((id) => id !== hobbyId)
-            : [...currentHobbies, hobbyId];
+          const newHobbies = currentHobbies.includes(hobbyName)
+            ? currentHobbies.filter((name) => name !== hobbyName)
+            : [...currentHobbies, hobbyName];
           return {
             aboutYou: { ...state.aboutYou, hobbies: newHobbies },
           };
