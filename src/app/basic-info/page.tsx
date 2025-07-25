@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Camera } from 'lucide-react'
 
 export default function Page() {
     const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
