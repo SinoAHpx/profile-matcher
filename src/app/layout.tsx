@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import StatusBar from "@/components/status-bar";
+import GlobalBottomBar from "@/components/global-bottom-bar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +31,7 @@ export default function RootLayout({
       >
         <StatusBar />
         <div className="h-full pt-[62px]">{children}</div>
+        <GlobalBottomBar />
       </body>
     </html>
   );
