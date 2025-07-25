@@ -2,10 +2,14 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export interface UserProfile {
+  avatar: string;
+  nickname: string;
   gender: string;
   ageRange: string;
   hobbies: string[];
-  bio: string;
+  mbti: string;
+  quote: string;
+  story: string;
   completed: boolean;
 }
 
@@ -18,10 +22,14 @@ interface UserProfileStore {
 }
 
 const defaultProfile: UserProfile = {
+  avatar: '',
+  nickname: '',
   gender: '',
   ageRange: '',
   hobbies: [],
-  bio: '',
+  mbti: '',
+  quote: '',
+  story: '',
   completed: false,
 };
 
