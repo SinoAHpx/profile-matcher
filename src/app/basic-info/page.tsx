@@ -20,7 +20,7 @@ export default function Page() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-between min-h-screen bg-[#FFF] p-12 space-y-16">
+        <div className="flex flex-col h-full items-center justify-between bg-[#FFF] p-12 space-y-16">
             {/* 圆形头像上传 */}
             <div className="relative">
                 <Avatar className="w-[240px] h-[240px] cursor-pointer" onClick={() => document.getElementById('avatar-upload')?.click()}>

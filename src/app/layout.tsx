@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import StatusBar from "@/components/status-bar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +28,8 @@ export default function RootLayout({
       <body
         className={`h-full ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="h-full">{children}</div>
+        <StatusBar />
+        <div className="h-full pt-11">{children}</div>
       </body>
     </html>
   );
