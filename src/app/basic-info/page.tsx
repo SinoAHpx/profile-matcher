@@ -1,15 +1,20 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { useProfileStore } from '@/stores/profileStore'
 
 export default function Page() {
+    const router = useRouter()
+    const setBasicInfo = useProfileStore((state) => state.setBasicInfo)
+    
     const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
-    const [nickname, setNickname] = useState('')
-    const [gender, setGender] = useState('')
+    const [name, setName] = useState('')
     const [age, setAge] = useState('')
+    const [location, setLocation] = useState('')
 
     const handleAvatarUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0]
@@ -17,6 +22,11 @@ export default function Page() {
             const url = URL.createObjectURL(file)
             setAvatarUrl(url)
         }
+    }
+
+    const handleNext = () => {
+        setBasicInfo({ name, age, location })
+        router.push('/about-you')
     }
 
     return (
@@ -44,25 +54,28 @@ export default function Page() {
                 <Input 
                     className="h-15" 
                     placeholder="用户名/昵称" 
-                    value={nickname}
-                    onChange={(e) => setNickname(e.target.value)}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                 />
                 <Input 
                     className="h-15" 
-                    placeholder="邮箱" 
-                    value={gender}
-                    onChange={(e) => setGender(e.target.value)}
-                />
-                <Input 
-                    className="h-15" 
-                    placeholder="职业" 
+                    placeholder="年龄" 
                     value={age}
                     onChange={(e) => setAge(e.target.value)}
+                />
+                <Input 
+                    className="h-15" 
+                    placeholder="位置" 
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
                 />
             </div>
 
             {/* 下一步按钮 */}
-            <Button className="w-full max-w-md h-15 bg-black text-white">
+            <Button 
+                className="w-full max-w-md h-15 bg-black text-white"
+                onClick={handleNext}
+            >
                 下一步
             </Button>
         </div>
