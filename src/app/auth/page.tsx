@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useRouter } from 'next/navigation';
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -19,6 +20,7 @@ export default function AuthPage() {
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { login, register } = useAuth();
+  const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -64,6 +66,66 @@ export default function AuthPage() {
       setMessage('An error occurred during registration');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Skip authentication for development
+  const skipAuth = async (userType: 'demo' | 'admin' | 'user') => {
+    const { authUtils } = await import('@/lib/auth');
+    const { useAuthStore } = await import('@/stores/auth');
+    const { useUserProfileStore } = await import('@/stores/user-profile');
+    
+    const store = useAuthStore.getState();
+    const userProfileStore = useUserProfileStore.getState();
+    
+    let user, tokens;
+    
+    switch (userType) {
+      case 'demo':
+        user = {
+          email: 'demo@example.com',
+          name: 'Demo User',
+          id: 'demo-user-id'
+        };
+        tokens = {
+          accessToken: 'demo-access-token',
+          refreshToken: 'demo-refresh-token'
+        };
+        break;
+      case 'admin':
+        user = {
+          email: 'admin@example.com',
+          name: 'Admin User',
+          id: 'admin-user-id'
+        };
+        tokens = {
+          accessToken: 'admin-access-token',
+          refreshToken: 'admin-refresh-token'
+        };
+        break;
+      case 'user':
+      default:
+        user = {
+          email: 'user@example.com',
+          name: 'Regular User',
+          id: 'user-id-' + Date.now()
+        };
+        tokens = {
+          accessToken: 'user-access-token-' + Date.now(),
+          refreshToken: 'user-refresh-token-' + Date.now()
+        };
+    }
+    
+    // Set auth data
+    authUtils.setAuthData(user, tokens);
+    store.setUser(user);
+    store.setTokens(tokens.accessToken, tokens.refreshToken);
+    
+    // Check if user has completed guide
+    if (userProfileStore.hasCompletedGuide()) {
+      router.push('/home');
+    } else {
+      router.push('/guide');
     }
   };
 
@@ -175,6 +237,40 @@ export default function AuthPage() {
           >
             {isLogin ? "Don't have an account?" : "Already have an account?"}
           </Button>
+          
+          {process.env.NODE_ENV === 'development' && (
+            <div className="w-full space-y-2 pt-2 border-t border-border">
+              <p className="text-xs text-center text-muted-foreground">
+                Development: Skip authentication
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1 h-8 text-xs"
+                  onClick={() => skipAuth('demo')}
+                >
+                  Demo User
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1 h-8 text-xs"
+                  onClick={() => skipAuth('admin')}
+                >
+                  Admin
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1 h-8 text-xs"
+                  onClick={() => skipAuth('user')}
+                >
+                  Regular User
+                </Button>
+              </div>
+            </div>
+          )}
           
           {isLogin && (
             <p className="text-xs text-center text-muted-foreground">
