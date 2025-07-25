@@ -1,125 +1,87 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface StatusBarProps {
   className?: string;
 }
 
-export default function StatusBar({ className = '' }: StatusBarProps) {
-  const [time, setTime] = useState('');
-  const [batteryLevel, setBatteryLevel] = useState(100);
-  const [isCharging, setIsCharging] = useState(false);
-  const [networkType, setNetworkType] = useState('5G');
-  const [signalStrength, setSignalStrength] = useState(4);
-  const [wifiConnected, setWifiConnected] = useState(true);
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const hours = now.getHours();
-      const minutes = now.getMinutes();
-      setTime(`${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`);
-    };
-
-    updateTime();
-    const timeInterval = setInterval(updateTime, 60000);
-
-    // Simulate battery level changes
-    const batteryInterval = setInterval(() => {
-      setBatteryLevel(prev => {
-        const newLevel = prev - Math.random() * 0.5;
-        return Math.max(0, Math.min(100, newLevel));
-      });
-    }, 30000);
-
-    // Simulate charging status
-    const chargingInterval = setInterval(() => {
-      setIsCharging(Math.random() > 0.8);
-    }, 60000);
-
-    return () => {
-      clearInterval(timeInterval);
-      clearInterval(batteryInterval);
-      clearInterval(chargingInterval);
-    };
-  }, []);
-
-  const renderSignalBars = () => {
-    return Array.from({ length: 4 }, (_, i) => (
-      <div
-        key={i}
-        className={`w-0.5 rounded-full transition-all duration-300 ${
-          i < signalStrength ? 'bg-white' : 'bg-white/30'
-        }`}
-        style={{
-          height: `${8 + i * 2}px`,
-          marginRight: i < 3 ? '1px' : '0'
-        }}
-      />
-    ));
-  };
-
-  const renderBatteryIcon = () => {
-    const batteryColor = batteryLevel > 20 ? 'bg-white' : 'bg-red-500';
-    
-    return (
-      <div className="relative flex items-center">
-        <div className="w-5 h-2.5 border border-white/60 rounded-sm relative flex items-center px-0.5">
-          <div 
-            className={`h-1.5 rounded-sm transition-all duration-300 ${batteryColor}`}
-            style={{ width: `${batteryLevel * 0.65}px` }}
-          />
-        </div>
-        <div className="w-0.5 h-1.5 bg-white/60 rounded-r-sm ml-px" />
-        {isCharging && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-2 h-2 bg-white rounded-full" />
-          </div>
-        )}
-      </div>
-    );
-  };
-
+export default function StatusBar({ className = "" }: StatusBarProps) {
   return (
     <div className={`fixed top-0 left-0 right-0 z-50 ${className}`}>
-      <div className="h-11 bg-black/80 backdrop-blur-md flex items-center justify-between px-6 text-white text-sm font-medium">
+      <div className="h-[62px] backdrop-blur-md flex items-center justify-between px-6 text-black font-bold text-xl">
         {/* Left side: Time */}
-        <div className="flex items-center space-x-2">
-          <span className="text-sm font-semibold tracking-wide">{time}</span>
+        <div className="flex items-center ml-8 space-x-2">
+          <span className="text-sm font-extrabold tracking-wide">06:30</span>
         </div>
 
         {/* Right side: Status indicators */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center justify-center space-x-2 mr-2">
           {/* Network type */}
-          <span className="text-xs font-semibold tracking-wide">{networkType}</span>
-          
+
           {/* Signal bars */}
-          {!wifiConnected && (
-            <div className="flex items-end space-x-px">
-              {renderSignalBars()}
-            </div>
-          )}
-          
+          <svg
+            width="20"
+            height="13"
+            viewBox="0 0 20 13"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M19.365 1.53295C19.365 0.899902 18.8875 0.386719 18.2984 0.386719H17.2317C16.6426 0.386719 16.165 0.899902 16.165 1.53295V11.4669C16.165 12.0999 16.6426 12.6131 17.2317 12.6131H18.2984C18.8875 12.6131 19.365 12.0999 19.365 11.4669V1.53295ZM11.9309 2.832H12.9976C13.5867 2.832 14.0643 3.3575 14.0643 4.00574V11.4394C14.0643 12.0876 13.5867 12.6131 12.9976 12.6131H11.9309C11.3418 12.6131 10.8643 12.0876 10.8643 11.4394V4.00574C10.8643 3.3575 11.3418 2.832 11.9309 2.832ZM7.59915 5.48105H6.53249C5.94338 5.48105 5.46582 6.01324 5.46582 6.66973V11.4244C5.46582 12.0809 5.94338 12.6131 6.53249 12.6131H7.59915C8.18826 12.6131 8.66582 12.0809 8.66582 11.4244V6.66973C8.66582 6.01324 8.18826 5.48105 7.59915 5.48105ZM2.29837 7.92634H1.23171C0.642602 7.92634 0.165039 8.45093 0.165039 9.09804V11.4414C0.165039 12.0885 0.642602 12.6131 1.23171 12.6131H2.29837C2.88748 12.6131 3.36504 12.0885 3.36504 11.4414V9.09804C3.36504 8.45093 2.88748 7.92634 2.29837 7.92634Z"
+              fill="black"
+            />
+          </svg>
+
           {/* WiFi icon */}
-          {wifiConnected && (
-            <svg 
-              className="w-4 h-4" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-6.938-4h13.855c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" 
-              />
-            </svg>
-          )}
-          
+          <svg
+            width="18"
+            height="13"
+            viewBox="0 0 18 13"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M8.93654 2.80222C11.4236 2.80232 13.8157 3.72441 15.6182 5.37789C15.7539 5.50554 15.9709 5.50393 16.1045 5.37428L17.402 4.11081C17.4697 4.04505 17.5075 3.95597 17.5069 3.86329C17.5063 3.77061 17.4675 3.68197 17.399 3.61697C12.668 -0.757741 5.2043 -0.757741 0.47329 3.61697C0.404758 3.68192 0.365874 3.77054 0.365242 3.86322C0.36461 3.9559 0.402283 4.045 0.469923 4.11081L1.76779 5.37428C1.90139 5.50413 2.11851 5.50574 2.25416 5.37789C4.0569 3.7243 6.44918 2.80221 8.93654 2.80222ZM8.93318 7.0225C10.2905 7.02241 11.5994 7.53415 12.6055 8.45828C12.7416 8.58943 12.9559 8.58659 13.0886 8.45187L14.3759 7.13256C14.4437 7.06336 14.4813 6.96948 14.4803 6.87193C14.4793 6.77438 14.4398 6.6813 14.3707 6.61351C11.3068 3.72266 6.56211 3.72266 3.49828 6.61351C3.42907 6.6813 3.38959 6.77443 3.38868 6.87201C3.38777 6.96959 3.42552 7.06346 3.49345 7.13256L4.78036 8.45187C4.91302 8.58659 5.12738 8.58943 5.26346 8.45828C6.26892 7.53476 7.57676 7.02307 8.93318 7.0225ZM11.4576 9.81605C11.4595 9.9214 11.4225 10.023 11.3552 10.0968L9.1785 12.5515C9.1147 12.6236 9.02771 12.6642 8.93694 12.6642C8.84617 12.6642 8.75917 12.6236 8.69537 12.5515L6.51834 10.0968C6.45109 10.0229 6.41409 9.92131 6.41608 9.81596C6.41808 9.71061 6.45889 9.61085 6.52887 9.54023C7.91897 8.22634 9.9549 8.22634 11.345 9.54023C11.4149 9.6109 11.4557 9.7107 11.4576 9.81605Z"
+              fill="black"
+            />
+          </svg>
+
           {/* Battery */}
-          {renderBatteryIcon()}
+          <svg
+            width="28"
+            height="13"
+            viewBox="0 0 28 13"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              opacity="0.35"
+              x="1.00684"
+              y="0.5"
+              width="24"
+              height="12"
+              rx="3.8"
+              stroke="black"
+            />
+            <path
+              opacity="0.4"
+              d="M26.5068 4.78125V8.85672C27.3116 8.51155 27.8349 7.70859 27.8349 6.81899C27.8349 5.92938 27.3116 5.12642 26.5068 4.78125Z"
+              fill="black"
+            />
+            <rect
+              x="2.50684"
+              y="2"
+              width="21"
+              height="9"
+              rx="2.5"
+              fill="black"
+            />
+          </svg>
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 
 export default function Page() {
   return (
-    <div className="flex flex-col items-center justify-between min-h-screen p-12">
+    <div className="flex flex-col h-full items-center justify-between p-12">
       <div className='flex justify-start w-full max-w-md'>
         <h1 className="mt-30 text-6xl font-bold mb-8">关于你</h1>
       </div>
