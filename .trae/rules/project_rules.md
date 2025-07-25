@@ -1,0 +1,2 @@
+- Use bun as package manager, don't run 'bun dev' command
+- Use Zustand to manage states
