@@ -10,8 +10,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent } from "@/components/ui/card"
-import { Plus, Calendar, MapPin } from "lucide-react"
 import { useActivityStore } from '@/stores/activityStore'
 
 interface AddActivityModalProps {
@@ -25,20 +23,20 @@ export default function AddActivityModal({ open, onOpenChange }: AddActivityModa
     const [location, setLocation] = useState('')
     const [description, setDescription] = useState('')
 
-      const { addActivity } = useActivityStore()
+    const { addActivity } = useActivityStore()
 
-  const handleSubmit = () => {
-    if (!title.trim()) return
-    
-    const newActivity = {
-      title: title.trim(),
-      date: time.trim() || '待定',
-      location: location.trim() || '待定',
-      description: description.trim() || '',
-      colorClass: 'bg-[#488ccd]', // Default color
-    }
-    
-    addActivity(newActivity)
+    const handleSubmit = () => {
+        if (!title.trim()) return
+
+        const newActivity = {
+            title: title.trim(),
+            date: time.trim() || '待定',
+            location: location.trim() || '待定',
+            description: description.trim() || '',
+            colorClass: 'bg-[#488ccd]', // Default color
+        }
+
+        addActivity(newActivity)
 
         // Reset form
         setTitle('')
@@ -52,13 +50,17 @@ export default function AddActivityModal({ open, onOpenChange }: AddActivityModa
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-[400px] p-0 gap-0" showCloseButton={false}>
+            <DialogContent className=" p-0 gap-0" showCloseButton={false}>
                 <div className="bg-white rounded-lg overflow-hidden">
                     {/* Header */}
                     <DialogHeader className="p-6 pb-4">
-                        <DialogTitle className="text-center text-xl font-bold text-black">
-                            编辑活动名称
-                        </DialogTitle>
+                        <div className="flex items-center justify-start">
+                            <div className="w-1 h-[60px] bg-[#a8a8a8] mr-4"></div>
+
+                            <DialogTitle className="text-left text-3xl font-bold text-black">
+                                编辑活动名称
+                            </DialogTitle>
+                        </div>
                     </DialogHeader>
 
                     {/* Content */}
@@ -75,44 +77,26 @@ export default function AddActivityModal({ open, onOpenChange }: AddActivityModa
 
                         {/* Time and Location Section */}
                         <div className="space-y-3">
-                            <div className="flex items-center gap-3">
-                                <span className="text-gray-600 text-base">点击编辑时间</span>
-                                <span className="text-gray-600 text-base">点击编辑地点</span>
-                            </div>
 
                             <div className="flex gap-3">
                                 <div className="flex-1">
-                                    <div className="flex items-center gap-2 p-3 border border-gray-200 rounded-lg">
-                                        <Calendar className="w-4 h-4 text-gray-400" />
-                                        <Input
-                                            placeholder="时间"
-                                            value={time}
-                                            onChange={(e) => setTime(e.target.value)}
-                                            className="border-0 p-0 h-auto text-base focus-visible:ring-0"
-                                        />
-                                    </div>
+                                    <Input
+                                        placeholder="时间"
+                                        value={time}
+                                        onChange={(e) => setTime(e.target.value)}
+                                        className="border-1 rounded-lg px-4 py-3 text-base"
+                                    />
                                 </div>
-
                                 <div className="flex-1">
-                                    <div className="flex items-center gap-2 p-3 border border-gray-200 rounded-lg">
-                                        <MapPin className="w-4 h-4 text-gray-400" />
-                                        <Input
-                                            placeholder="地点"
-                                            value={location}
-                                            onChange={(e) => setLocation(e.target.value)}
-                                            className="border-0 p-0 h-auto text-base focus-visible:ring-0"
-                                        />
-                                    </div>
+                                    <Input
+                                        placeholder="地点"
+                                        value={location}
+                                        onChange={(e) => setLocation(e.target.value)}
+                                        className="border-1 rounded-lg px-4 py-3 text-base"
+                                    />
                                 </div>
                             </div>
                         </div>
-
-                        {/* Image Upload Area */}
-                        <Card className="bg-[#f3f3f3] border-0">
-                            <CardContent className="flex items-center justify-center h-[120px] p-0">
-                                <Plus className="w-10 h-10 text-gray-400" />
-                            </CardContent>
-                        </Card>
 
                         {/* Description */}
                         <div>
@@ -127,7 +111,7 @@ export default function AddActivityModal({ open, onOpenChange }: AddActivityModa
                         {/* Publish Button */}
                         <Button
                             onClick={handleSubmit}
-                            className="w-full bg-blue-500 hover:bg-blue-600 text-white py-4 rounded-lg text-base font-medium"
+                            className="w-full h-15"
                             disabled={!title.trim()}
                         >
                             发布活动
