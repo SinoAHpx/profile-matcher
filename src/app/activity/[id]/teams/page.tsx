@@ -8,11 +8,18 @@ import TeamCard from "@/components/TeamCard";
 import Image from "next/image";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
+import { CreateTeamDialog } from "@/components/CreateTeamDialog";
 
 export default function TeamsPage() {
     const params = useParams();
     const activityId = params.id as string;
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+    const handleCreateTeam = (teamData: { name: string; description: string }) => {
+        console.log('Creating team:', { ...teamData, activityId })
+        // Add your team creation logic here
+    };
 
     // Team card data
     const teamCards = [
@@ -163,7 +170,10 @@ export default function TeamsPage() {
                                 <span className="text-white text-sm bg-black/30 px-2 py-1 rounded whitespace-nowrap">创建队伍</span>
                                 <Button 
                                     className="w-16 h-16 rounded-full bg-[#5c5c5c] border-none shadow-lg flex items-center justify-center"
-                                    onClick={() => setIsPopoverOpen(false)}
+                                    onClick={() => {
+                                        setIsPopoverOpen(false)
+                                        setIsCreateModalOpen(true)
+                                    }}
                                 >
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
                                         <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -227,6 +237,14 @@ export default function TeamsPage() {
                 {/* Bottom Navigation */}
                 <BottomNavigation className="pb-10" />    
             </div>
+
+            {/* Create Team Modal */}
+            <CreateTeamDialog 
+                open={isCreateModalOpen} 
+                onOpenChange={setIsCreateModalOpen} 
+                onCreateTeam={handleCreateTeam}
+                activityId={activityId} 
+            />
         </div>
     );
 }
