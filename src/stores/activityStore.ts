@@ -9,15 +9,37 @@ export interface Activity {
   description: string
   colorClass: string
   hasBeta?: boolean
+
+  // 用户在首次进入活动时填写的自我介绍信息
+  introduction?: {
+    message: string
+    // 预留字段: 未来可扩展技能等
+    skills?: string[]
+  }
 }
 
 interface ActivityStore {
   activities: Activity[]
   searchQuery: string
 
+  // 当前正在进行自我介绍的活动 ID （首次进入时设定）
+  currentActivityId: number | null
+
   // Actions
   setActivities: (activities: Activity[]) => void
   addActivity: (activity: Omit<Activity, 'id'>) => void
+
+  /** 设置当前需要填写介绍的活动 ID */
+  setCurrentActivityId: (id: number | null) => void
+
+  /** 保存某个活动的自我介绍信息 */
+  setActivityIntroduction: (
+    id: number,
+    introduction: { message: string; skills?: string[] }
+  ) => void
+
+  /** 根据 id 获取活动 */
+  getActivityById: (id: number) => Activity | undefined
   setSearchQuery: (query: string) => void
   getFilteredActivities: () => Activity[]
 }
@@ -90,6 +112,8 @@ export const useActivityStore = create<ActivityStore>()(
       ],
       searchQuery: '',
 
+      currentActivityId: null,
+
       setActivities: (activities) => set({ activities }),
 
       addActivity: (activity) => {
@@ -99,6 +123,21 @@ export const useActivityStore = create<ActivityStore>()(
           id: Math.max(...activities.map(a => a.id), 0) + 1,
         }
         set({ activities: [...activities, newActivity] })
+      },
+
+      setCurrentActivityId: (id) => set({ currentActivityId: id }),
+
+      setActivityIntroduction: (id, introduction) => {
+        set((state) => ({
+          activities: state.activities.map((activity) =>
+            activity.id === id ? { ...activity, introduction } : activity
+          ),
+        }))
+      },
+
+      getActivityById: (id) => {
+        const { activities } = get()
+        return activities.find((a) => a.id === id)
       },
 
       setSearchQuery: (searchQuery) => set({ searchQuery }),

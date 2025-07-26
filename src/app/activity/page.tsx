@@ -65,6 +65,7 @@ export default function ActivityPage() {
                                 location={event.location}
                                 description={event.description}
                                 hasBeta={event.hasBeta}
+                                color={event.colorClass}
                             />
                         ))}
                     </div>

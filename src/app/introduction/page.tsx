@@ -1,29 +1,53 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useProfileStore } from '@/stores/profileStore';
+import { useActivityStore } from '@/stores/activityStore';
 import { AdvancedInput } from '@/components/ui/advanced-input';
-import Hobbies from '@/components/hobbies';
+// import Hobbies from '@/components/hobbies';
 import Skills from '@/components/skills';
 
 export default function IntroductionPage() {
   const router = useRouter()
-  const { introduceYou, setIntroduceYouMessage } = useProfileStore()
-  
-  const [message, setMessage] = useState(introduceYou.message)
+  const {
+    currentActivityId,
+    getActivityById,
+    setActivityIntroduction,
+    setCurrentActivityId,
+  } = useActivityStore()
+
+  // 如果没有正在进行的活动 ID，则返回活动列表
+  useEffect(() => {
+    if (currentActivityId === null) {
+      router.replace('/activity');
+    }
+  }, [currentActivityId, router]);
+
+  if (currentActivityId === null) {
+    return null;
+  }
+
+  const currentActivity = getActivityById(currentActivityId)
+
+  const initialMessage = currentActivity?.introduction?.message || ''
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [message, setMessage] = useState(initialMessage)
 
   const handleNext = () => {
-    setIntroduceYouMessage(message)
-    // 完成流程，可以跳转到 profile 页面或其他页面
-    router.push('/profile')
+    // 保存用户的自我介绍到当前活动
+    setActivityIntroduction(currentActivityId, { message })
+    // 清空当前活动 ID，避免重复
+    setCurrentActivityId(null)
+    // 跳转回该活动的队伍页
+    router.push(`/activity/${currentActivityId}/teams`)
   }
 
   const handlePrevious = () => {
-    setIntroduceYouMessage(message)
-    router.push('/about-you')
+    // 取消填写，返回活动列表
+    setCurrentActivityId(null)
+    router.push('/activity')
   }
 
   return (
@@ -34,27 +58,27 @@ export default function IntroductionPage() {
       </div>
 
       <div className="w-full max-w-md space-y-6">
-        <Textarea 
-          placeholder="说说你自己吧" 
-          className="w-full h-[320px] resize-none" 
+        <Textarea
+          placeholder="说说你自己吧"
+          className="w-full h-[320px] resize-none"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
 
         <AdvancedInput className='h-15' title="自我介绍">
-            <Skills />
+          <Skills />
         </AdvancedInput>
       </div>
 
       <div className="flex w-full justify-center space-x-8 mt-4">
-        <Button 
-          className="flex-1 h-15" 
+        <Button
+          className="flex-1 h-15"
           variant="outline"
           onClick={handlePrevious}
         >
           取消
         </Button>
-        <Button 
+        <Button
           className="flex-1 h-15"
           onClick={handleNext}
         >

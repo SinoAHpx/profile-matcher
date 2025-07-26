@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Heart, Check } from "lucide-react";
 import { useRouter } from 'next/navigation';
+import { useActivityStore } from '@/stores/activityStore';
 
 interface EventCardProps {
   id: number;
@@ -19,7 +20,7 @@ interface EventCardProps {
 
 const colorClasses = [
   "bg-[#f5894f]",
-  "bg-[#488ccd]", 
+  "bg-[#488ccd]",
   "bg-[#a7a7a7]",
   "bg-[#ff6b6b]",
   "bg-[#4ecdc4]",
@@ -30,17 +31,18 @@ const colorClasses = [
   "bg-[#54a0ff]"
 ];
 
-const getRandomColor = () => {
-  return colorClasses[Math.floor(Math.random() * colorClasses.length)];
+// Ensure deterministic color to avoid hydration mismatch between server and client.
+const getDeterministicColor = (id: number) => {
+  return colorClasses[id % colorClasses.length];
 };
 
-export default function EventCard({ 
+export default function EventCard({
   id,
-  name, 
-  date, 
-  location, 
-  description, 
-  hasBeta = false, 
+  name,
+  date,
+  location,
+  description,
+  hasBeta = false,
   color,
   isFavorite = false,
   isRegistered = false,
@@ -48,14 +50,25 @@ export default function EventCard({
   onRegister
 }: EventCardProps) {
   const router = useRouter();
-  const colorClass = color || getRandomColor();
+  // If a color is passed in, use it; otherwise derive a deterministic one from the id.
+  const colorClass = color || getDeterministicColor(id);
 
   const handleClick = () => {
-    router.push(`/activity/${id}/teams`);
+    // 判断用户是否已为该活动填写过自我介绍
+    const activity = useActivityStore.getState().getActivityById(id);
+
+    if (!activity || !activity.introduction) {
+      // 标记当前活动 ID，跳转到自我介绍页面
+      useActivityStore.getState().setCurrentActivityId(id);
+      router.push('/introduction');
+    } else {
+      // 已经填写过，直接进入队伍页
+      router.push(`/activity/${id}/teams`);
+    }
   };
 
   return (
-    <Card 
+    <Card
       className="flex flex-col w-full items-start gap-2.5 px-3 py-[15px] bg-white rounded-xl shadow-lg border-0 cursor-pointer"
       onClick={handleClick}
     >
@@ -89,7 +102,7 @@ export default function EventCard({
               </div>
             </div>
           )}
-          
+
           {/* Action Buttons */}
           <div className="flex justify-end gap-2 mt-2">
             {onToggleFavorite && (
@@ -98,24 +111,22 @@ export default function EventCard({
                   e.stopPropagation();
                   onToggleFavorite();
                 }}
-                className={`p-1 rounded-full transition-colors ${
-                  isFavorite ? 'text-red-500' : 'text-gray-400 hover:text-red-400'
-                }`}
+                className={`p-1 rounded-full transition-colors ${isFavorite ? 'text-red-500' : 'text-gray-400 hover:text-red-400'
+                  }`}
                 aria-label="Toggle favorite"
               >
                 <Heart className={`w-4 h-4 ${isFavorite ? 'fill-current' : ''}`} />
               </button>
             )}
-            
+
             {onRegister && (
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   onRegister();
                 }}
-                className={`p-1 rounded-full transition-colors ${
-                  isRegistered ? 'text-green-500' : 'text-gray-400 hover:text-green-400'
-                }`}
+                className={`p-1 rounded-full transition-colors ${isRegistered ? 'text-green-500' : 'text-gray-400 hover:text-green-400'
+                  }`}
                 aria-label="Register for activity"
               >
                 <Check className={`w-4 h-4 ${isRegistered ? 'fill-current' : ''}`} />
