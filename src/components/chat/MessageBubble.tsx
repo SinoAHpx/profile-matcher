@@ -24,8 +24,8 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
 
   const baseClasses = "max-w-xs rounded-2xl p-4 shadow-sm";
   const userClasses = isUser 
-    ? "bg-gradient-to-br from-gray-600 to-gray-700 text-white ml-auto" 
-    : "bg-gradient-to-br from-gray-500 to-gray-600 text-white";
+    ? "bg-[#a8a8a8] text-white ml-auto" 
+    : "bg-[#a8a8a8] text-white";
   
   const alignmentClasses = isUser ? "flex justify-end" : "flex justify-start";
 
