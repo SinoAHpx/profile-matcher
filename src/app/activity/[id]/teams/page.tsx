@@ -1,15 +1,18 @@
 'use client'
 
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import BottomNavigation from "@/components/BottomNavigation";
 import TeamCard from "@/components/TeamCard";
 import Image from "next/image";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
 
 export default function TeamsPage() {
     const params = useParams();
     const activityId = params.id as string;
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
     // Team card data
     const teamCards = [
@@ -125,9 +128,68 @@ export default function TeamsPage() {
 
     return (
         <div className="bg-white min-h-screen flex flex-col px-4">
+            {/* Blur overlay */}
+            {isPopoverOpen && (
+                <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40" />
+            )}
+            
             {/* 小精灵组件 */}
-            <div className="fixed -right-4 top-[60%] transform -translate-y-1/2 z-10">
-                <Image width={64} height={64} src="/echo.svg" alt="小精灵" className="w-16 h-16" />
+            <div className="fixed -right-4 top-[60%] transform -translate-y-1/2 z-999">
+                <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+                    <PopoverTrigger asChild>
+                        <button className="w-16 h-16 rounded-full focus:outline-none">
+                            <Image width={64} height={64} src="/echo.svg" alt="小精灵" className="w-16 h-16" />
+                        </button>
+                    </PopoverTrigger>
+                    <PopoverContent 
+                        side="left" 
+                        align="start" 
+                        sideOffset={8}
+                        className="bg-transparent border-none shadow-none p-0 w-auto"
+                    >
+                        <div className="flex flex-col gap-3">
+                            <div className="flex items-center gap-2">
+                                <span className="text-white text-sm bg-black/30 px-2 py-1 rounded whitespace-nowrap">快速匹配</span>
+                                <Button 
+                                    className="w-16 h-16 rounded-full bg-[#5c5c5c] border-none shadow-lg flex items-center justify-center"
+                                    onClick={() => setIsPopoverOpen(false)}
+                                >
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                    </svg>
+                                </Button>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-white text-sm bg-black/30 px-2 py-1 rounded whitespace-nowrap">创建队伍</span>
+                                <Button 
+                                    className="w-16 h-16 rounded-full bg-[#5c5c5c] border-none shadow-lg flex items-center justify-center"
+                                    onClick={() => setIsPopoverOpen(false)}
+                                >
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="8.5" cy="7" r="4"/>
+                                        <path d="M20 8v6"/>
+                                        <path d="M23 11h-6"/>
+                                    </svg>
+                                </Button>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-white text-sm bg-black/30 px-2 py-1 rounded whitespace-nowrap">进入广场</span>
+                                <Button 
+                                    className="w-16 h-16 rounded-full bg-[#5c5c5c] border-none shadow-lg flex items-center justify-center"
+                                    onClick={() => setIsPopoverOpen(false)}
+                                >
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                                        <rect x="3" y="3" width="7" height="7"/>
+                                        <rect x="14" y="3" width="7" height="7"/>
+                                        <rect x="14" y="14" width="7" height="7"/>
+                                        <rect x="3" y="14" width="7" height="7"/>
+                                    </svg>
+                                </Button>
+                            </div>
+                        </div>
+                    </PopoverContent>
+                </Popover>
             </div>
             
             <div className="max-w-[402px] mx-auto w-full flex flex-col flex-1 px-4 py-6 pt-15 pb-40">

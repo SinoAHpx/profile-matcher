@@ -81,10 +81,20 @@ export default function TeamMembersPage() {
         </div>
 
         {/* Members list */}
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-8 mb-8">
           {mockMembers.map((member) => (
             <MemberCard key={member.id} member={member} />
           ))}
+        </div>
+
+        {/* Action buttons */}
+        <div className="flex flex-col gap-4 mt-auto pb-6">
+          <button className="w-full py-3 px-4 bg-green-600 text-white rounded-lg font-medium hover:bg-green-600 transition-colors">
+            加入队伍
+          </button>
+          <button className="w-full py-3 px-4 bg-red-600 text-white rounded-lg font-medium hover:bg-red-600 transition-colors">
+            退出队伍/解散队伍
+          </button>
         </div>
       </div>
     </div>
