@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useProfileStore } from "@/stores/profileStore";
+import BottomNavigation from "@/components/BottomNavigation";
 
 const ProfilePage = () => {
   const { basicInfo, aboutYou, tellYou } = useProfileStore();
@@ -69,52 +70,7 @@ const ProfilePage = () => {
           )}
         </div>
     
-        {/* 底部导航 */}
-        <div className="fixed -bottom-5 left-0 right-0 flex justify-center gap-10 items-center p-4 bg-gradient-to-t from-white to-transparent z-40">
-          <button className="text-center">
-            <div className="w-16 h-16 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center mx-auto mb-2 shadow-lg hover:shadow-xl transition-shadow">
-              <div className="w-8 h-8 bg-[#5c5c5c] rounded-full"></div>
-            </div>
-            <p>自我</p>
-          </button>
-          <button className="text-center">
-            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-2 shadow-lg hover:shadow-xl transition-shadow">
-              {/* 社群 icon */}
-              <div className="w-8 h-8 relative flex items-center justify-center">
-                <div className="w-3 h-3 rounded-full bg-gray-400"></div>
-                {[...Array(8)].map((_, i) => {
-                  const angle = (i / 8) * 2 * Math.PI;
-                  const x = Math.cos(angle) * 10;
-                  const y = Math.sin(angle) * 10;
-                  return (
-                    <div
-                      key={i}
-                      className="absolute w-1.5 h-1.5 rounded-full bg-gray-400"
-                      style={{
-                        top: `calc(50% + ${y}px)`,
-                        left: `calc(50% + ${x}px)`,
-                        transform: "translate(-50%, -50%)",
-                      }}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-            <p>社群</p>
-          </button>
-        </div>
-    
-        <div
-          className="bottom-0 left-0 right-0 h-40 -mb-30 rounded-t-2xl max-w-md"
-          style={{
-            background:
-              "linear-gradient(to top, #FFF 50%, rgba(92, 92, 92, 0.67))",
-          }}
-        >
-          <div className="text-center p-4 text-[#FFF] mb-4 text-sm">
-            向上滑动以探索Echo
-          </div>
-        </div>
+        <BottomNavigation />
       </div>
     </div>
   );

@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import BottomNavigation from "@/components/BottomNavigation";
 
 const activities = [
   {
@@ -104,7 +105,7 @@ export default function ActivityPage() {
       </div>
 
       {/* 底部导航 */}
-      <BottomNavBar />
+      <BottomNavigation className="pb-10" />
 
       <VoiceAgentButton />
 
@@ -121,70 +122,6 @@ export default function ActivityPage() {
       />
       <CouponCodeModal open={showCouponCode} onClose={() => setShowCouponCode(false)} />
       <ActivityDetailModal open={showDetail} onClose={() => setShowDetail(false)} />
-    </div>
-  );
-}
-
-function BottomNavBar() {
-  return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-10">
-      <div className="flex justify-center items-end gap-16 py-4">
-        {/* 自我 */}
-        <div className="flex flex-col items-center">
-          <div className="relative flex items-center justify-center" style={{ width: 88, height: 88 }}>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <svg width="88" height="88">
-                <circle cx="44" cy="44" r="40" fill="#fff" />
-                <circle cx="44" cy="44" r="40" fill="url(#selfShadow)" />
-                <defs>
-                  <radialGradient id="selfShadow" cx="50%" cy="50%" r="50%">
-                    <stop offset="70%" stopColor="#fff" stopOpacity="0.9" />
-                    <stop offset="100%" stopColor="#eee" stopOpacity="0.7" />
-                  </radialGradient>
-                </defs>
-              </svg>
-            </div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-16 h-16 rounded-full bg-gray-300" />
-            </div>
-          </div>
-          <div className="mt-2 text-lg font-bold text-gray-500">自我</div>
-        </div>
-        {/* 社群 */}
-        <div className="flex flex-col items-center">
-          <div className="relative flex items-center justify-center" style={{ width: 88, height: 88 }}>
-            <svg width="88" height="88">
-              <circle cx="44" cy="44" r="40" fill="#fff" stroke="#aaa" strokeWidth="2" />
-            </svg>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-12 h-12 rounded-full bg-gray-500" />
-            </div>
-            {/* 8个小圆点 */}
-            {Array.from({ length: 8 }).map((_, idx) => {
-              const angle = (idx / 8) * 2 * Math.PI;
-              const r = 32;
-              const x = 44 + r * Math.cos(angle) - 8;
-              const y = 44 + r * Math.sin(angle) - 8;
-              const color = idx % 2 === 0 ? "#FFA25A" : "#4B9EFF";
-              return (
-                <div
-                  key={idx}
-                  style={{
-                    position: "absolute",
-                    left: x,
-                    top: y,
-                    width: 16,
-                    height: 16,
-                    borderRadius: "50%",
-                    background: color,
-                  }}
-                />
-              );
-            })}
-          </div>
-          <div className="mt-2 text-lg font-bold text-gray-500">社群</div>
-        </div>
-      </div>
     </div>
   );
 }
