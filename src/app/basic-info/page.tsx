@@ -34,7 +34,7 @@ export default function Page() {
             {/* 圆形头像上传 */}
             <div className="relative">
                 <Avatar className="w-[240px] h-[240px] cursor-pointer" onClick={() => document.getElementById('avatar-upload')?.click()}>
-                    <AvatarImage src={avatarUrl || undefined} alt="头像" />
+                    <AvatarImage className='object-cover' src={avatarUrl || undefined} alt="头像" />
                     <AvatarFallback className="bg-gray-100 text-gray-400 text-xl">
                         点击上传头像
                     </AvatarFallback>
