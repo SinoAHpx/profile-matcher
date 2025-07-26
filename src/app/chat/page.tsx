@@ -23,36 +23,22 @@ export default function ChatPage() {
   type ChatMessage = {
     type: 'ego' | 'echo';
     bubbleType: 'text' | 'voice' | 'image';
+    id: number;
     content: string;
     duration?: string;
     imageUrl?: string;
     audioUrl?: string;
     timestamp?: string;
+    isLoading?: boolean;
   };
 
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
-      type: 'ego',
-      bubbleType: 'voice',
-      content: '',
-      duration: '0:00 / 0:49',
-    },
-    {
+      id: Date.now() + 1,
       type: 'echo',
       bubbleType: 'text',
       content:
         '说话主体：通常是自我 (Ego) 或超我 (Superego) 的声音。\n被倾听者：仍是自我, 但在当下被分裂为“执行我(acting ego)”与“观察我(observing ego)”。\n心理动力：\n自我必须在本我冲动和超我要求之间调停, 于是产生“自我劝说”式对话。超我是最早由父母/文化内化的, 所以听起来往往带有权威、道德或苛责口吻。',
-    },
-    {
-      type: 'ego',
-      bubbleType: 'image',
-      content: "Here's a diagram explaining ego psychology",
-      imageUrl: '/api/placeholder/200/150',
-    },
-    {
-      type: 'ego',
-      bubbleType: 'text',
-      content: 'I understand, this is a complex psychological process.',
     },
   ]);
 
@@ -75,24 +61,103 @@ export default function ChatPage() {
     router.push('/activity');
   };
 
+  // 工具函数: 将 Blob/File 转为 base64（去除 data:*;base64, 前缀）
+  const toBase64 = (blob: Blob): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const res = reader.result as string;
+        resolve(res.split(',')[1]);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+
+  // 共用的发送函数
+  const sendToLLM = async (
+    placeholderId: number,
+    options: { text?: string; audioBase64?: string; imageBase64?: string }
+  ) => {
+    interface Payload {
+      model: string;
+      user: string;
+      messages: { role: string; content: string }[];
+      return_audio: boolean;
+      audio_base64?: string;
+      image_base64?: string;
+    }
+
+    const payload: Payload = {
+      model: 'gpt-4o-mini',
+      user: 'demo-user',
+      messages: [],
+      return_audio: false,
+    };
+
+    if (options.text) {
+      payload.messages.push({ role: 'user', content: options.text });
+    }
+    if (options.audioBase64) {
+      payload.audio_base64 = options.audioBase64;
+    }
+    if (options.imageBase64) {
+      payload.image_base64 = options.imageBase64;
+    }
+
+    // 如果既没有文本也没有其他模态, 则直接返回
+    if (!payload.messages.length && !payload.audio_base64 && !payload.image_base64) return;
+
+    try {
+      const res = await fetch('http://localhost:8001/v1/chat/multimodal', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      const reply = data?.choices?.[0]?.message?.content ?? data?.reply ?? '...';
+      setMessages((prev) =>
+        prev.map((m) => (m.id === placeholderId ? { ...m, content: reply, isLoading: false } : m))
+      );
+    } catch (e) {
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id === placeholderId ? { ...m, content: '出错了，请稍后重试', isLoading: false } : m
+        )
+      );
+    }
+  };
+
   const handleSendMessage = () => {
     const trimmed = newMessage.trim();
     if (!trimmed) return;
-    setMessages((prev) => [
-      ...prev,
-      {
-        type: 'ego',
-        bubbleType: 'text',
-        content: trimmed,
-      },
-    ]);
+
+    const userMsg: ChatMessage = {
+      id: Date.now(),
+      type: 'ego',
+      bubbleType: 'text',
+      content: trimmed,
+    };
+
+    const placeholderId = Date.now() + 1;
+    const placeholderMsg: ChatMessage = {
+      id: placeholderId,
+      type: 'echo',
+      bubbleType: 'text',
+      content: '',
+      isLoading: true,
+    };
+
+    setMessages((prev) => [...prev, userMsg, placeholderMsg]);
+
     setNewMessage('');
     setIsTextOpen(false);
+
+    // 调用多模态接口 (仅文本)
+    sendToLLM(placeholderId, { text: trimmed });
   };
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const [isRecording, setIsRecording] = useState(false);
-  const [recordedChunks, setRecordedChunks] = useState<BlobPart[]>([]);
 
   // 发送语音消息（MVP: 使用固定时长演示）
   const handleSendVoice = () => {
@@ -102,26 +167,48 @@ export default function ChatPage() {
     } else {
       // start
       navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-        const mediaRecorder = new MediaRecorder(stream);
+        // 选择浏览器支持的音频 MIME 类型
+        const preferredTypes = [
+          'audio/webm;codecs=opus',
+          'audio/webm',
+          'audio/mp4',
+        ];
+        const mimeType = preferredTypes.find((t) => MediaRecorder.isTypeSupported(t)) || '';
+
+        const mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
         mediaRecorderRef.current = mediaRecorder;
-        setRecordedChunks([]);
+
+        const chunks: Blob[] = [];
         mediaRecorder.ondataavailable = (e) => {
-          setRecordedChunks((prev) => [...prev, e.data]);
+          if (e.data.size) chunks.push(e.data);
         };
         mediaRecorder.onstop = () => {
-          const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+          const blob = new Blob(chunks, { type: mimeType || 'audio/webm' });
           const url = URL.createObjectURL(blob);
-          setMessages((prev) => [
-            ...prev,
-            {
-              type: 'ego',
-              bubbleType: 'voice',
-              content: '',
-              audioUrl: url,
-            },
-          ]);
+
+          const userMsg: ChatMessage = {
+            id: Date.now(),
+            type: 'ego',
+            bubbleType: 'voice',
+            content: '',
+            audioUrl: url,
+          };
+
+          const placeholderId = Date.now() + 1;
+          const placeholderMsg: ChatMessage = {
+            id: placeholderId,
+            type: 'echo',
+            bubbleType: 'text',
+            content: '',
+            isLoading: true,
+          };
+
+          setMessages((prev) => [...prev, userMsg, placeholderMsg]);
           setIsVoiceOpen(false);
           setIsRecording(false);
+
+          // 转 base64 并发送
+          toBase64(blob).then((base64) => sendToLLM(placeholderId, { audioBase64: base64 }));
         };
         mediaRecorder.start();
         setIsRecording(true);
@@ -134,16 +221,28 @@ export default function ChatPage() {
     const file = e.target.files?.[0];
     if (!file) return;
     const url = URL.createObjectURL(file);
-    setMessages((prev) => [
-      ...prev,
-      {
-        type: 'ego',
-        bubbleType: 'image',
-        content: file.name,
-        imageUrl: url,
-      },
-    ]);
+
+    const userMsg: ChatMessage = {
+      id: Date.now(),
+      type: 'ego',
+      bubbleType: 'image',
+      content: file.name,
+      imageUrl: url,
+    };
+
+    const placeholderId = Date.now() + 1;
+    const placeholderMsg: ChatMessage = {
+      id: placeholderId,
+      type: 'echo',
+      bubbleType: 'text',
+      content: '',
+      isLoading: true,
+    };
+
+    setMessages((prev) => [...prev, userMsg, placeholderMsg]);
     setIsImageOpen(false);
+
+    toBase64(file).then((base64) => sendToLLM(placeholderId, { imageBase64: base64 }));
   };
 
   return (
@@ -202,8 +301,8 @@ export default function ChatPage() {
 
       {/* Chat Area */}
       <main ref={chatContainerRef} className="flex-1 p-4 space-y-6 overflow-y-auto pb-40">
-        {messages.map((msg, idx) => (
-          <Message key={idx} {...msg} />
+        {messages.map((msg) => (
+          <Message key={msg.id} {...msg} />
         ))}
       </main>
 

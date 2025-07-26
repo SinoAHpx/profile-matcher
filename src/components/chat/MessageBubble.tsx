@@ -11,6 +11,7 @@ interface MessageBubbleProps {
   duration?: string; // for voice messages
   imageUrl?: string; // for image messages
   audioUrl?: string; // for voice messages
+  isLoading?: boolean;
 }
 
 export const MessageBubble: React.FC<MessageBubbleProps> = ({
@@ -21,6 +22,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
   duration,
   imageUrl,
   audioUrl,
+  isLoading = false,
 }) => {
   const isUser = sender === 'user';
 
@@ -36,7 +38,11 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
       case 'text':
         return (
           <div className={`${baseClasses} ${userClasses}`}>
-            <p className="text-sm">{content}</p>
+            {isLoading ? (
+              <p className="text-sm animate-pulse text-gray-300">正在思考...</p>
+            ) : (
+              <p className="text-sm">{content}</p>
+            )}
             {timestamp && (
               <p className="text-xs opacity-70 mt-1 text-right">{timestamp}</p>
             )}

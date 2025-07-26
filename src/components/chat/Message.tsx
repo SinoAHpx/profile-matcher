@@ -10,6 +10,7 @@ interface MessageProps {
   duration?: string;
   imageUrl?: string;
   audioUrl?: string;
+  isLoading?: boolean;
   timestamp?: string;
 }
 
@@ -20,6 +21,7 @@ export const Message: React.FC<MessageProps> = ({
   duration,
   imageUrl,
   audioUrl,
+  isLoading,
   timestamp,
 }) => {
   const isEgo = type === 'ego';
@@ -43,6 +45,7 @@ export const Message: React.FC<MessageProps> = ({
           duration={duration}
           imageUrl={imageUrl}
           audioUrl={audioUrl}
+          isLoading={isLoading}
           timestamp={timestamp}
         />
       </div>
