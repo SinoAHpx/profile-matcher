@@ -38,7 +38,7 @@ export default function TeamCard({ id, title, description, color, dots, activity
       className="flex-1 min-w-[160px] max-w-[calc(50%-8px)] h-[120px] shadow-[0px_4px_36px_0px_rgba(0,0,0,0.05)] rounded-xl cursor-pointer hover:shadow-lg transition-shadow"
       onClick={handleClick}
     >
-      <CardContent className="p-4 flex flex-col h-full">
+      <CardContent className="p-4 flex flex-col h-full relative">
         <div className="flex flex-col flex-1 gap-2">
           <h3 className="text-[#000000] text-xs font-semibold leading-tight">
             {title}
@@ -46,18 +46,13 @@ export default function TeamCard({ id, title, description, color, dots, activity
 
           <div className={`h-0.5 ${color} rounded-sm`} />
 
-          <p className="text-[#000000] text-[10px] leading-snug flex-1">
-            {description.split("\n").map((line, i) => (
-              <React.Fragment key={i}>
-                {line}
-                {i < description.split("\n").length - 1 && <br />}
-              </React.Fragment>
-            ))}
+          <p className="text-[#000000] text-[10px] leading-snug overflow-hidden line-clamp-2">
+            {description.replace(/\n/g, ' ')}
           </p>
+        </div>
 
-          <div className="mt-auto">
-            {renderDots(dots)}
-          </div>
+        <div className="absolute -bottom-3 right-4">
+          {renderDots(dots)}
         </div>
       </CardContent>
     </Card>

@@ -2,9 +2,7 @@
 
 import React from "react";
 import { useParams } from "next/navigation";
-import { Avatar } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
-import { Filter, Search } from "lucide-react";
 import BottomNavigation from "@/components/BottomNavigation";
 import TeamCard from "@/components/TeamCard";
 
@@ -72,28 +70,68 @@ export default function TeamsPage() {
             color: "bg-[#488ccd]",
             dots: [1, 1, 1, 0],
         },
-    ];
-
-    // Navigation items
-    const navItems = [
-        { id: 1, name: "自我", selected: false },
-        { id: 2, name: "ADVX", selected: true },
-        { id: 3, name: "社群", selected: false },
+        {
+            id: 9,
+            title: "招Web3开发/后端",
+            description: "这边还差一名队友\n已经有较为成熟创意",
+            color: "bg-[#488ccd]",
+            dots: [1, 1, 1, 0],
+        },
+        {
+            id: 10,
+            title: "招Web3开发/后端",
+            description: "这边还差一名队友\n已经有较为成熟创意",
+            color: "bg-[#488ccd]",
+            dots: [1, 1, 1, 0],
+        },
+        {
+            id: 11,
+            title: "招Web3开发/后端",
+            description: "这边还差一名队友\n已经有较为成熟创意",
+            color: "bg-[#488ccd]",
+            dots: [1, 1, 1, 0],
+        },
+        {   
+            id: 12,
+            title: "招Web3开发/后端",
+            description: "这边还差一名队友\n已经有较为成熟创意",
+            color: "bg-[#488ccd]",
+            dots: [1, 1, 1, 0],
+        },
+        {
+            id: 13,
+            title: "招Web3开发/后端",
+            description: "这边还差一名队友\n已经有较为成熟创意",
+            color: "bg-[#488ccd]",
+            dots: [1, 1, 1, 0],
+        },
+        {
+            id: 14,
+            title: "招Web3开发/后端",
+            description: "这边还差一名队友\n已经有较为成熟创意",
+            color: "bg-[#488ccd]",
+            dots: [1, 1, 1, 0],
+        },
+        {
+            id: 15,
+            title: "招Web3开发/后端",
+            description: "这边还差一名队友\n已经有较为成熟创意",
+            color: "bg-[#488ccd]",
+            dots: [1, 1, 1, 0],
+        },
     ];
 
 
     return (
-        <div className="bg-white min-h-screen flex flex-col">
-            <div className="max-w-[402px] mx-auto w-full flex flex-col flex-1 px-4 py-6 pt-15">
-
+        <div className="bg-white min-h-screen flex flex-col px-4">
+            <div className="max-w-[402px] mx-auto w-full flex flex-col flex-1 px-4 py-6 pt-15 pb-40">
+                <div className="flex items-center justify-between mb-4">
+                    <h1 className="text-2xl font-bold text-[#000000]">
+                        队伍
+                    </h1>
+                </div>
                 {/* Header section */}
                 <div className="flex flex-col gap-4 mb-6">
-
-                    {/* Search bar */}
-                    {/* <div className="flex items-center gap-3 px-4 py-3 bg-white rounded-full border border-[#d9d9d9]">
-                        <Search className="w-4 h-4 text-[#cacaca]" />
-                        
-                    </div> */}
 
                     <Input
                         className="px-6 py-3 rounded-full flex-1 border-1 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 h-auto text-[#cacaca] placeholder:text-[#cacaca]"
