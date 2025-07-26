@@ -59,6 +59,7 @@ export default function ActivityPage() {
                         {filteredActivities.map((event) => (
                             <EventCard
                                 key={event.id}
+                                id={event.id}
                                 name={event.title}
                                 date={event.date}
                                 location={event.location}

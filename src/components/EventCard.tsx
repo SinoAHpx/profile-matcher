@@ -1,8 +1,10 @@
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Heart, Check } from "lucide-react";
+import { useRouter } from 'next/navigation';
 
 interface EventCardProps {
+  id: number;
   name: string;
   date: string;
   location: string;
@@ -33,6 +35,7 @@ const getRandomColor = () => {
 };
 
 export default function EventCard({ 
+  id,
   name, 
   date, 
   location, 
@@ -44,10 +47,18 @@ export default function EventCard({
   onToggleFavorite,
   onRegister
 }: EventCardProps) {
+  const router = useRouter();
   const colorClass = color || getRandomColor();
 
+  const handleClick = () => {
+    router.push(`/activity/${id}/teams`);
+  };
+
   return (
-    <Card className="flex flex-col w-full items-start gap-2.5 px-3 py-[15px] bg-white rounded-xl shadow-lg border-0">
+    <Card 
+      className="flex flex-col w-full items-start gap-2.5 px-3 py-[15px] bg-white rounded-xl shadow-lg border-0 cursor-pointer"
+      onClick={handleClick}
+    >
       <CardContent className="flex w-full items-center justify-between p-0">
         <div className="inline-flex items-center gap-[15px]">
           <div
@@ -83,7 +94,10 @@ export default function EventCard({
           <div className="flex justify-end gap-2 mt-2">
             {onToggleFavorite && (
               <button
-                onClick={onToggleFavorite}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleFavorite();
+                }}
                 className={`p-1 rounded-full transition-colors ${
                   isFavorite ? 'text-red-500' : 'text-gray-400 hover:text-red-400'
                 }`}
@@ -95,7 +109,10 @@ export default function EventCard({
             
             {onRegister && (
               <button
-                onClick={onRegister}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRegister();
+                }}
                 className={`p-1 rounded-full transition-colors ${
                   isRegistered ? 'text-green-500' : 'text-gray-400 hover:text-green-400'
                 }`}
