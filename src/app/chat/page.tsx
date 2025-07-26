@@ -1,4 +1,5 @@
 import { Menu, Plus, Mic, Image, Type } from 'lucide-react';
+import { MessageBubble } from '@/components/chat/MessageBubble';
 
 export default function ChatPage() {
   return (
@@ -11,34 +12,60 @@ export default function ChatPage() {
 
       {/* Chat Area */}
       <main className="flex-1 p-4 space-y-6 overflow-y-auto">
-        {/* Ego Message */}
+        {/* Ego Voice Message */}
         <div className="flex items-start gap-3">
           <div className="w-10 h-10 rounded-full bg-white"></div>
           <div>
-            <p className="font-semibold">Ego</p>
-            <div className="mt-1 flex items-center gap-2 bg-white dark:bg-gray-700 rounded-full p-2 shadow">
-              <div className="w-6 h-6 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center">
-                <div className="w-0 h-0 border-t-[6px] border-t-transparent border-l-[10px] border-l-gray-800 dark:border-l-white border-b-[6px] border-b-transparent"></div>
-              </div>
-              <span className="text-sm">0:00 / 0:49</span>
-              <div className="flex-1 h-1 bg-gray-200 dark:bg-gray-600 rounded-full">
-                <div className="w-1/4 h-full bg-gray-400 dark:bg-gray-300 rounded-full"></div>
-              </div>
-            </div>
+            <p className="font-semibold mb-2">Ego</p>
+            <MessageBubble 
+              type="voice" 
+              content="" 
+              sender="user" 
+              duration="0:00 / 0:49" 
+            />
           </div>
         </div>
 
-        {/* Echo Message */}
+        {/* Echo Text Message */}
         <div className="flex items-start gap-3">
           <div className="w-10 h-10 rounded-full bg-gray-600"></div>
           <div>
-            <p className="font-semibold">Echo</p>
-            <div className="mt-1 bg-white dark:bg-gray-700 rounded-lg p-3 text-sm max-w-xs">
-              <p><strong>说话主体：</strong>通常是自我 (Ego) 或超我 (Superego) 的声音。</p>
-              <p><strong>被倾听者：</strong>仍是自我, 但在当下被分裂为“执行我(acting ego)”与“观察我(observing ego)”。</p>
-              <p><strong>心理动力：</strong></p>
-              <p>自我必须在本我冲动和超我要求之间调停, 于是产生“自我劝说”式对话。超我是最早由父母/文化内化的, 所以听起来往往带有权威、道德或苛责口吻。</p>
-            </div>
+            <p className="font-semibold mb-2">Echo</p>
+            <MessageBubble 
+              type="text" 
+              sender="llm" 
+              content="说话主体：通常是自我 (Ego) 或超我 (Superego) 的声音。
+被倾听者：仍是自我, 但在当下被分裂为“执行我(acting ego)”与“观察我(observing ego)”。
+心理动力：
+自我必须在本我冲动和超我要求之间调停, 于是产生“自我劝说”式对话。超我是最早由父母/文化内化的, 所以听起来往往带有权威、道德或苛责口吻。" 
+            />
+          </div>
+        </div>
+
+        {/* Example text message from user */}
+        <div className="flex items-start gap-3 justify-end">
+          <div className="w-10 h-10 rounded-full bg-white order-2"></div>
+          <div className="order-1">
+            <p className="font-semibold mb-2 text-right">You</p>
+            <MessageBubble 
+              type="text" 
+              sender="user" 
+              content="I understand, this is a complex psychological process." 
+            />
+          </div>
+        </div>
+
+        {/* Example image message */}
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 rounded-full bg-white"></div>
+          <div>
+            <p className="font-semibold mb-2">Ego</p>
+            <MessageBubble 
+              type="image" 
+              sender="user" 
+              content="Here's a diagram explaining ego psychology" 
+              imageUrl="/api/placeholder/200/150" 
+            />
           </div>
         </div>
       </main>
