@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import MemberCard from '@/components/MemberCard';
+import BottomNavigation from '@/components/BottomNavigation';
 
 interface Member {
   id: number;
@@ -70,32 +71,39 @@ export default function TeamMembersPage() {
       <div className="max-w-[402px] mx-auto w-full flex flex-col flex-1 px-4 py-6 pt-15">
 
         {/* Header */}
-        <div className="flex items-center mb-6">
+        <div className="flex items-center mb-6 justify-between">
           <button
             onClick={handleBack}
             className="p-2 mr-3 hover:bg-gray-100 rounded-full transition-colors"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <h1 className="text-2xl font-bold text-[#000000]">队伍成员</h1>
+          <h1 className="text-2xl font-bold text-[#000000]">{`队伍 ${teamId}`}</h1>
         </div>
 
         {/* Members list */}
-        <div className="flex flex-col gap-8 mb-8">
+        <div className="flex flex-col gap-4 mb-8">
           {mockMembers.map((member) => (
-            <MemberCard key={member.id} member={member} />
+            <MemberCard
+              key={member.id}
+              member={member}
+              onClick={() => router.push(`/viewer/${member.id}`)}
+            />
           ))}
         </div>
 
         {/* Action buttons */}
-        <div className="flex flex-col gap-4 mt-auto pb-6">
+        <div className="flex gap-4 mt-auto pb-30">
+          <button className="w-full py-3 px-4 bg-red-600 text-white rounded-lg font-medium hover:bg-red-600 transition-colors">
+            退出队伍
+          </button>
           <button className="w-full py-3 px-4 bg-green-600 text-white rounded-lg font-medium hover:bg-green-600 transition-colors">
             加入队伍
           </button>
-          <button className="w-full py-3 px-4 bg-red-600 text-white rounded-lg font-medium hover:bg-red-600 transition-colors">
-            退出队伍/解散队伍
-          </button>
+
         </div>
+
+        <BottomNavigation className='pb-10' />
       </div>
     </div>
   );
