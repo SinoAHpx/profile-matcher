@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import BottomNavigation from "@/components/BottomNavigation";
@@ -11,6 +11,7 @@ import Image from "next/image";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { CreateTeamDialog } from "@/components/CreateTeamDialog";
+import { useActivityStore } from '@/stores/activityStore'
 
 export default function TeamsPage() {
     const params = useParams();
@@ -21,161 +22,45 @@ export default function TeamsPage() {
     const [activeTab, setActiveTab] = useState<'teams' | 'members'>("teams");
     const router = useRouter();
 
+    const activityIdNum = Number(activityId);
+
+    // 获取所有 teams/members，然后 useMemo 过滤，避免 zustand selector 每次返回新数组导致 "getSnapshot" 警告
+    const allTeams = useActivityStore(state => state.teams)
+    const allMembers = useActivityStore(state => state.members)
+
+    const teams = React.useMemo(() => allTeams.filter(t => t.activityId === activityIdNum), [allTeams, activityIdNum])
+    const members = React.useMemo(() => allMembers.filter(m => m.activityId === activityIdNum), [allMembers, activityIdNum])
+    const addTeam = useActivityStore(state => state.addTeam);
+    const setMembers = useActivityStore(state => state.setMembers);
+    const setTeams = useActivityStore(state => state.setTeams);
+
+    // Fetch members from mock API (只在首次加载且本地没有成员数据时请求)
+    useEffect(() => {
+        if (members.length === 0) {
+            fetch(`/api/members?activityId=${activityId}`)
+                .then(res => res.json())
+                .then((data) => {
+                    setMembers(data)
+                })
+                .catch(console.error)
+        }
+        if (teams.length === 0) {
+            fetch(`/api/teams?activityId=${activityId}`)
+                .then(res => res.json())
+                .then((data) => setTeams(data))
+                .catch(console.error)
+        }
+    }, [activityId, members.length, teams.length, setMembers, setTeams])
+
     const handleCreateTeam = (teamData: { name: string; description: string }) => {
-        console.log('Creating team:', { ...teamData, activityId })
-        // Add your team creation logic here
+        addTeam({
+            activityId: activityIdNum,
+            title: teamData.name,
+            description: teamData.description,
+            color: 'bg-[#488ccd]',
+            dots: [0, 0, 0, 0]
+        })
     };
-
-    // Team card data
-    const teamCards = [
-        {
-            id: 1,
-            title: "具身机器人+洗澡",
-            description: "智能硬件招募 组队",
-            color: "bg-[#488ccd]",
-            dots: [1, 1, 1, 0],
-        },
-        {
-            id: 2,
-            title: "招Web3开发/后端",
-            description: "这边还差一名队友\n已经有较为成熟创意",
-            color: "bg-[#488ccd]",
-            dots: [1, 1, 1, 0],
-        },
-        {
-            id: 3,
-            title: "准备做ai生成游戏",
-            description:
-                "希望你具备扎实工程基础与极强学习能力的开发，非常熟悉cursor等AI IDE",
-            color: "bg-[#f5894f]",
-            dots: [1, 1, 0, 0],
-        },
-        {
-            id: 4,
-            title: "招募平面设计师",
-            description: "招募平面设计师和AI提示词大神 欢迎来端点B 找我们",
-            color: "bg-[#f5894f]",
-            dots: [1, 1, 0, 0],
-        },
-        {
-            id: 5,
-            title: "浙大CS研0 LLM方向",
-            description: "找一位会UI的和一位和CV方向的队友",
-            color: "bg-[#488ccd]",
-            dots: [1, 1, 1, 0],
-        },
-        {
-            id: 6,
-            title: "想佛系组队",
-            description: "不准备想什么idea，准备到了现场现想",
-            color: "bg-[#f5894f]",
-            dots: [1, 1, 0, 0],
-        },
-        {
-            id: 7,
-            title: "准备做ai生成游戏",
-            description:
-                "希望你具备扎实工程基础与极强学习能力的开发，非常熟悉cursor等AI IDE",
-            color: "bg-[#f5894f]",
-            dots: [1, 1, 0, 0],
-        },
-        {
-            id: 8,
-            title: "招Web3开发/后端",
-            description: "这边还差一名队友\n已经有较为成熟创意",
-            color: "bg-[#488ccd]",
-            dots: [1, 1, 1, 0],
-        },
-        {
-            id: 9,
-            title: "招Web3开发/后端",
-            description: "这边还差一名队友\n已经有较为成熟创意",
-            color: "bg-[#488ccd]",
-            dots: [1, 1, 1, 0],
-        },
-        {
-            id: 10,
-            title: "招Web3开发/后端",
-            description: "这边还差一名队友\n已经有较为成熟创意",
-            color: "bg-[#488ccd]",
-            dots: [1, 1, 1, 0],
-        },
-        {
-            id: 11,
-            title: "招Web3开发/后端",
-            description: "这边还差一名队友\n已经有较为成熟创意",
-            color: "bg-[#488ccd]",
-            dots: [1, 1, 1, 0],
-        },
-        {
-            id: 12,
-            title: "招Web3开发/后端",
-            description: "这边还差一名队友\n已经有较为成熟创意",
-            color: "bg-[#488ccd]",
-            dots: [1, 1, 1, 0],
-        },
-        {
-            id: 13,
-            title: "招Web3开发/后端",
-            description: "这边还差一名队友\n已经有较为成熟创意",
-            color: "bg-[#488ccd]",
-            dots: [1, 1, 1, 0],
-        },
-        {
-            id: 14,
-            title: "招Web3开发/后端",
-            description: "这边还差一名队友\n已经有较为成熟创意",
-            color: "bg-[#488ccd]",
-            dots: [1, 1, 1, 0],
-        },
-        {
-            id: 15,
-            title: "招Web3开发/后端",
-            description: "这边还差一名队友\n已经有较为成熟创意",
-            color: "bg-[#488ccd]",
-            dots: [1, 1, 1, 0],
-        },
-    ];
-
-    // Members data（临时静态数据）
-    const members = [
-        {
-            id: 1,
-            name: "阿尔法",
-            avatar: "/avatar.webp",
-            quote: "热爱挑战，期待合作！",
-            mbti: "INTJ",
-            description: "算法工程师 / LLM Enthusiast",
-            tags: ["LLM", "Go", "AI"]
-        },
-        {
-            id: 2,
-            name: "贝塔",
-            avatar: "/avatar.webp",
-            quote: "设计即生活。",
-            mbti: "ENFP",
-            description: "产品设计师 / Web3 Lover",
-            tags: ["Design", "Figma"]
-        },
-        {
-            id: 3,
-            name: "查理",
-            avatar: "/avatar.webp",
-            quote: "代码改变世界。",
-            mbti: "ISTP",
-            description: "全栈开发 / DevOps",
-            tags: ["React", "Docker"]
-        },
-        {
-            id: 4,
-            name: "达尔文",
-            avatar: "/avatar.webp",
-            quote: "创新源于好奇心。",
-            mbti: "ENTJ",
-            description: "创业者 / 商业策略",
-            tags: ["Startup", "Strategy"]
-        },
-    ];
 
 
     return (
@@ -276,7 +161,7 @@ export default function TeamsPage() {
                 {activeTab === 'teams' ? (
                     <div className="flex-1 flex flex-col gap-4 overflow-y-auto">
                         <div className="flex flex-wrap gap-4">
-                            {teamCards.map((card) => (
+                            {teams.map((card) => (
                                 <TeamCard
                                     key={card.id}
                                     id={card.id}

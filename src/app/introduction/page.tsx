@@ -18,22 +18,22 @@ export default function IntroductionPage() {
     setCurrentActivityId,
   } = useActivityStore()
 
-  // 如果没有正在进行的活动 ID，则返回活动列表
+  // 不论有没有 activityId，都要保持 Hook 调用顺序
+  const currentActivity = currentActivityId !== null ? getActivityById(currentActivityId) : undefined
+  const initialMessage = currentActivity?.introduction?.message || ''
+  const [message, setMessage] = useState(initialMessage)
+
+  // 如果没有正在进行的活动 ID，则跳回活动列表
   useEffect(() => {
     if (currentActivityId === null) {
-      router.replace('/activity');
+      router.replace('/activity')
     }
-  }, [currentActivityId, router]);
+  }, [currentActivityId, router])
 
   if (currentActivityId === null) {
-    return null;
+    // 仍然渲染一个空 div，保证 hooks 数量一致即可
+    return <div />
   }
-
-  const currentActivity = getActivityById(currentActivityId)
-
-  const initialMessage = currentActivity?.introduction?.message || ''
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [message, setMessage] = useState(initialMessage)
 
   const handleNext = () => {
     // 保存用户的自我介绍到当前活动
