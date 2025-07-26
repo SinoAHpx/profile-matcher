@@ -70,7 +70,7 @@ const ProfilePage = () => {
         </div>
     
         {/* 底部导航 */}
-        <div className="fixed bottom-0 left-0 right-0 flex justify-center gap-10 items-center p-4 bg-gradient-to-t from-white to-transparent z-40">
+        <div className="fixed -bottom-5 left-0 right-0 flex justify-center gap-10 items-center p-4 bg-gradient-to-t from-white to-transparent z-40">
           <button className="text-center">
             <div className="w-16 h-16 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center mx-auto mb-2 shadow-lg hover:shadow-xl transition-shadow">
               <div className="w-8 h-8 bg-[#5c5c5c] rounded-full"></div>
