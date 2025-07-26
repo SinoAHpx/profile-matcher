@@ -4,15 +4,14 @@ const BUTTON_SIZE = 64;
 
 export default function VoiceAgentButton() {
   const buttonRef = useRef<HTMLDivElement>(null);
-  const [pos, setPos] = useState({ x: 30, y: 400 });
+  const [pos, setPos] = useState({ y: 400 });
   const [dragging, setDragging] = useState(false);
-  const offset = useRef({ x: 0, y: 0 });
+  const offset = useRef({ y: 0 });
 
   // 鼠标拖动
   const handleMouseDown = (e: React.MouseEvent) => {
     setDragging(true);
     offset.current = {
-      x: e.clientX - pos.x,
       y: e.clientY - pos.y,
     };
     document.body.style.userSelect = "none";
@@ -22,14 +21,12 @@ export default function VoiceAgentButton() {
     setDragging(true);
     const touch = e.touches[0];
     offset.current = {
-      x: touch.clientX - pos.x,
       y: touch.clientY - pos.y,
     };
   };
   const handleMouseMove = (e: MouseEvent) => {
     if (!dragging) return;
     setPos({
-      x: e.clientX - offset.current.x,
       y: e.clientY - offset.current.y,
     });
   };
@@ -37,7 +34,6 @@ export default function VoiceAgentButton() {
     if (!dragging) return;
     const touch = e.touches[0];
     setPos({
-      x: touch.clientX - offset.current.x,
       y: touch.clientY - offset.current.y,
     });
   };
@@ -76,7 +72,7 @@ export default function VoiceAgentButton() {
       onTouchStart={handleTouchStart}
       style={{
         position: "fixed",
-        left: pos.x,
+        right: 30,
         top: pos.y,
         zIndex: 50,
         width: BUTTON_SIZE,
@@ -90,7 +86,7 @@ export default function VoiceAgentButton() {
         justifyContent: "center",
       }}
     >
-      <img src="/voice.svg" alt="voice agent" style={{ width: 40, height: 40 }} />
+      <img src="/echo.svg" alt="voice agent" style={{ width: 40, height: 40 }} />
     </div>
   );
 }
