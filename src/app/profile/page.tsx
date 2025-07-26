@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 
 const ProfilePage = () => {
   return (
-    <div className="bg-white text-gray-800 flex flex-col items-center font-sans p-10 pb-32">
+    <div className="bg-white text-gray-800 flex flex-col items-center font-sans p-10 pb-32 pt-20">
       <div className="w-full max-w-md mx-auto space-y-4">
         {/* Profile Header */}
         <div className="flex items-center space-x-4 p-4">
