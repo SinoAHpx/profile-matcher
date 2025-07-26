@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
+import { Heart, Check } from "lucide-react";
 
 interface EventCardProps {
   name: string;
@@ -8,6 +9,10 @@ interface EventCardProps {
   description: string;
   hasBeta?: boolean;
   color?: string;
+  isFavorite?: boolean;
+  isRegistered?: boolean;
+  onToggleFavorite?: () => void;
+  onRegister?: () => void;
 }
 
 const colorClasses = [
@@ -33,7 +38,11 @@ export default function EventCard({
   location, 
   description, 
   hasBeta = false, 
-  color 
+  color,
+  isFavorite = false,
+  isRegistered = false,
+  onToggleFavorite,
+  onRegister
 }: EventCardProps) {
   const colorClass = color || getRandomColor();
 
@@ -59,16 +68,43 @@ export default function EventCard({
           </div>
         </div>
 
-        <div className="w-[120px] font-light text-[#cacaca] text-[10px] leading-[18px]">
+        <div className="w-[120px] font-light text-[#cacaca] text-[10px] leading-[18px] text-right">
           {description}
           {hasBeta && (
-            <div className="flex items-center mt-2">
+            <div className="flex items-center justify-end mt-2">
               <div className="w-[18px] h-[18px] bg-[#d9d9d9] rounded-[9px]" />
               <div className="ml-2 font-light text-[#cacaca] text-xs">
                 Beta
               </div>
             </div>
           )}
+          
+          {/* Action Buttons */}
+          <div className="flex justify-end gap-2 mt-2">
+            {onToggleFavorite && (
+              <button
+                onClick={onToggleFavorite}
+                className={`p-1 rounded-full transition-colors ${
+                  isFavorite ? 'text-red-500' : 'text-gray-400 hover:text-red-400'
+                }`}
+                aria-label="Toggle favorite"
+              >
+                <Heart className={`w-4 h-4 ${isFavorite ? 'fill-current' : ''}`} />
+              </button>
+            )}
+            
+            {onRegister && (
+              <button
+                onClick={onRegister}
+                className={`p-1 rounded-full transition-colors ${
+                  isRegistered ? 'text-green-500' : 'text-gray-400 hover:text-green-400'
+                }`}
+                aria-label="Register for activity"
+              >
+                <Check className={`w-4 h-4 ${isRegistered ? 'fill-current' : ''}`} />
+              </button>
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>

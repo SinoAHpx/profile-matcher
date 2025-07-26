@@ -1,76 +1,21 @@
+'use client'  
+
 import BottomNavigation from "@/components/BottomNavigation";
 import EventCard from "@/components/EventCard";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useActivityStore } from '@/stores/activityStore';
 import { Plus, Search } from "lucide-react";
 import React from "react";
 
 export default function ActivityPage() {
-    // Event data for mapping
-    const events = [
-        {
-            id: 1,
-            title: "AdeventureX",
-            date: "7.23-7.27",
-            location: "杭州",
-            description: "全国最大的黑客松",
-            colorClass: "bg-[#f5894f]",
-        },
-        {
-            id: 2,
-            title: "年轻人入乡",
-            date: "7.23-7.27",
-            location: "昆山",
-            description: "小红村大会与瓶行宇宙社会创新节",
-            colorClass: "bg-[#488ccd]",
-        },
-        {
-            id: 3,
-            title: "羽毛球混双",
-            date: "7月28日",
-            location: "3km",
-            description: "杭州市余杭区未来科技城体育馆",
-            colorClass: "bg-[#a7a7a7]",
-            hasBeta: true,
-        },
-        {
-            id: 4,
-            title: "羽毛球混双",
-            date: "7月28日",
-            location: "3km",
-            description: "杭州市余杭区未来科技城体育馆",
-            colorClass: "bg-[#a7a7a7]",
-            hasBeta: true,
-        },
-        {
-            id: 5,
-            title: "羽毛球混双",
-            date: "7月28日",
-            location: "3km",
-            description: "杭州市余杭区未来科技城体育馆",
-            colorClass: "bg-[#a7a7a7]",
-            hasBeta: true,
-        },
-        {
-            id: 6,
-            title: "羽毛球混双",
-            date: "7月28日",
-            location: "3km",
-            description: "杭州市余杭区未来科技城体育馆",
-            colorClass: "bg-[#a7a7a7]",
-            hasBeta: true,
-        },
-        {
-            id: 7,
-            title: "羽毛球混双",
-            date: "7月28日",
-            location: "3km",
-            description: "杭州市余杭区未来科技城体育馆",
-            colorClass: "bg-[#a7a7a7]",
-            hasBeta: true,
-        },
+    const { 
+        searchQuery, 
+        setSearchQuery, 
+        getFilteredActivities,
+    } = useActivityStore();
 
-    ];
+    const filteredActivities = getFilteredActivities();
 
     return (
         <div className="bg-white min-h-screen flex flex-col p-10 pb-25">
@@ -84,6 +29,8 @@ export default function ActivityPage() {
                             type="search"
                             placeholder="点击搜索"
                             className="w-full border-1 rounded-full bg-background px-8 py-5"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     </div>
                 </div>
@@ -107,7 +54,7 @@ export default function ActivityPage() {
                 {/* Event Cards Container */}
                 <div className="flex-1 overflow-y-auto">
                     <div className="flex flex-col gap-4">
-                        {events.map((event) => (
+                        {filteredActivities.map((event) => (
                             <EventCard
                                 key={event.id}
                                 name={event.title}

@@ -18,10 +18,16 @@ interface TellYou {
   message: string;
 }
 
+interface IntroduceYou {
+  skills: string[];
+  message: string;
+}
+
 interface ProfileState {
   basicInfo: BasicInfo;
   aboutYou: AboutYou;
   tellYou: TellYou;
+  introduceYou: IntroduceYou;
   
   // Actions for basic info
   setBasicInfo: (info: Partial<BasicInfo>) => void;
@@ -34,6 +40,11 @@ interface ProfileState {
   
   // Actions for tell you
   setTellYouMessage: (message: string) => void;
+  
+  // Actions for introduce you
+  setSkills: (skills: string[]) => void;
+  toggleSkill: (skillName: string) => void;
+  setIntroduceYouMessage: (message: string) => void;
   
   // Reset actions
   resetProfile: () => void;
@@ -56,12 +67,18 @@ const initialTellYou: TellYou = {
   message: '',
 };
 
+const initialIntroduceYou: IntroduceYou = {
+  skills: [],
+  message: '',
+};
+
 export const useProfileStore = create<ProfileState>()(
   persist(
     (set) => ({
       basicInfo: initialBasicInfo,
       aboutYou: initialAboutYou,
       tellYou: initialTellYou,
+      introduceYou: initialIntroduceYou,
       
       setBasicInfo: (info) =>
         set((state) => ({
@@ -83,7 +100,7 @@ export const useProfileStore = create<ProfileState>()(
             aboutYou: { ...state.aboutYou, hobbies: newHobbies },
           };
         }),
-      
+
       setMbti: (mbti) =>
         set((state) => ({
           aboutYou: { ...state.aboutYou, mbti },
@@ -95,8 +112,29 @@ export const useProfileStore = create<ProfileState>()(
         })),
       
       setTellYouMessage: (message) =>
-        set(() => ({
-          tellYou: { message },
+        set((state) => ({
+          tellYou: { ...state.tellYou, message },
+        })),
+
+      setSkills: (skills) =>
+        set((state) => ({
+          introduceYou: { ...state.introduceYou, skills },
+        })),
+      
+      toggleSkill: (skillName) =>
+        set((state) => {
+          const currentSkills = state.introduceYou.skills;
+          const newSkills = currentSkills.includes(skillName)
+            ? currentSkills.filter((name) => name !== skillName)
+            : [...currentSkills, skillName];
+          return {
+            introduceYou: { ...state.introduceYou, skills: newSkills },
+          };
+        }),
+
+      setIntroduceYouMessage: (message) =>
+        set((state) => ({
+          introduceYou: { ...state.introduceYou, message },
         })),
       
       resetProfile: () =>
@@ -104,6 +142,7 @@ export const useProfileStore = create<ProfileState>()(
           basicInfo: initialBasicInfo,
           aboutYou: initialAboutYou,
           tellYou: initialTellYou,
+          introduceYou: initialIntroduceYou,
         }),
     }),
     {
