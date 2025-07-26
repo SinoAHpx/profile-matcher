@@ -3,8 +3,8 @@ import { persist } from 'zustand/middleware';
 
 interface BasicInfo {
   name: string;
-  age: string;
-  location: string;
+  password: string;
+  gender: string;
   avatar: string | null;
 }
 
@@ -41,8 +41,8 @@ interface ProfileState {
 
 const initialBasicInfo: BasicInfo = {
   name: '',
-  age: '',
-  location: '',
+  password: '',
+  gender: '',
   avatar: null,
 };
 

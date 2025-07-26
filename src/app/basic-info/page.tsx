@@ -13,8 +13,8 @@ export default function Page() {
     
     const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
     const [name, setName] = useState('')
-    const [age, setAge] = useState('')
-    const [location, setLocation] = useState('')
+    const [password, setPassword] = useState('')
+    const [gender, setGender] = useState('')
 
     const handleAvatarUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0]
@@ -25,7 +25,7 @@ export default function Page() {
     }
 
     const handleNext = () => {
-        setBasicInfo({ name, age, location, avatar: avatarUrl })
+        setBasicInfo({ name, password, gender, avatar: avatarUrl })
         router.push('/about-you')
     }
 
@@ -59,15 +59,16 @@ export default function Page() {
                 />
                 <Input 
                     className="h-15" 
-                    placeholder="年龄" 
-                    value={age}
-                    onChange={(e) => setAge(e.target.value)}
+                    placeholder="密码" 
+                    type='password'
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                 />
                 <Input 
                     className="h-15" 
-                    placeholder="位置" 
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="性别" 
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
                 />
             </div>
 
