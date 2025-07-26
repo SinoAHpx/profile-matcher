@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import BottomNavigation from "@/components/BottomNavigation";
 import TeamCard from "@/components/TeamCard";
+import Image from "next/image";
 
 export default function TeamsPage() {
     const params = useParams();
@@ -124,6 +125,11 @@ export default function TeamsPage() {
 
     return (
         <div className="bg-white min-h-screen flex flex-col px-4">
+            {/* 小精灵组件 */}
+            <div className="fixed -right-4 top-[60%] transform -translate-y-1/2 z-10">
+                <Image width={64} height={64} src="/echo.svg" alt="小精灵" className="w-16 h-16" />
+            </div>
+            
             <div className="max-w-[402px] mx-auto w-full flex flex-col flex-1 px-4 py-6 pt-15 pb-40">
                 <div className="flex items-center justify-between mb-4">
                     <h1 className="text-2xl font-bold text-[#000000]">

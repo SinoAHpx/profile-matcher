@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import BottomNavigation from "@/components/BottomNavigation";
 import { useRouter } from "next/navigation";
-import { Home, User, Settings, MessageCircle, Bell } from "lucide-react";
+import { Home } from "lucide-react";
 
 export default function TestPage() {
   const { basicInfo, aboutYou, tellYou, resetProfile } = useProfileStore();
