@@ -1,26 +1,28 @@
-'use client'  
+'use client'
 
 import BottomNavigation from "@/components/BottomNavigation";
 import EventCard from "@/components/EventCard";
+import AddActivityModal from "@/components/AddActivityModal";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useActivityStore } from '@/stores/activityStore';
 import { Plus, Search } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 
 export default function ActivityPage() {
-    const { 
-        searchQuery, 
-        setSearchQuery, 
+    const {
+        searchQuery,
+        setSearchQuery,
         getFilteredActivities,
     } = useActivityStore();
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const filteredActivities = getFilteredActivities();
 
     return (
         <div className="bg-white min-h-screen flex flex-col p-10 pb-25">
             <div className="max-w-[402px] mx-auto w-full flex flex-col flex-1 px-4 py-6">
-                
+
                 {/* Search Bar */}
                 <div className="flex w-full items-center gap-2.5 px-0 py-[15px]">
                     <div className="relative w-full">
@@ -37,7 +39,7 @@ export default function ActivityPage() {
 
                 {/* Empty Content Area with Plus Icon */}
                 <div className="rounded-xl">
-                    <Card className="bg-[#f3f3f3] border-0">
+                    <Card className="bg-[#f3f3f3] border-0 cursor-pointer" onClick={() => setIsModalOpen(true)}>
                         <CardContent className="flex items-center justify-center h-[120px] p-0">
                             <Plus className="w-10 h-10 text-gray-400" />
                         </CardContent>
@@ -70,6 +72,12 @@ export default function ActivityPage() {
 
             {/* Bottom Navigation */}
             <BottomNavigation className="pb-10" />
+
+            {/* Add Activity Modal */}
+            <AddActivityModal
+                open={isModalOpen}
+                onOpenChange={setIsModalOpen}
+            />
         </div>
     );
 }

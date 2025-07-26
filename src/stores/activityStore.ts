@@ -14,9 +14,10 @@ export interface Activity {
 interface ActivityStore {
   activities: Activity[]
   searchQuery: string
-  
+
   // Actions
   setActivities: (activities: Activity[]) => void
+  addActivity: (activity: Omit<Activity, 'id'>) => void
   setSearchQuery: (query: string) => void
   getFilteredActivities: () => Activity[]
 }
@@ -90,14 +91,23 @@ export const useActivityStore = create<ActivityStore>()(
       searchQuery: '',
 
       setActivities: (activities) => set({ activities }),
-      
+
+      addActivity: (activity) => {
+        const { activities } = get()
+        const newActivity = {
+          ...activity,
+          id: Math.max(...activities.map(a => a.id), 0) + 1,
+        }
+        set({ activities: [...activities, newActivity] })
+      },
+
       setSearchQuery: (searchQuery) => set({ searchQuery }),
-      
+
       getFilteredActivities: () => {
         const { activities, searchQuery } = get()
         if (!searchQuery) return activities
-        
-        return activities.filter(activity => 
+
+        return activities.filter(activity =>
           activity.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
           activity.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
           activity.location.toLowerCase().includes(searchQuery.toLowerCase())
