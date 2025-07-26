@@ -32,7 +32,7 @@ export default function TestPage() {
             </div>
             <p><strong>姓名:</strong> {basicInfo.name || "未填写"}</p>
             <p><strong>密码:</strong> {basicInfo.password || "未填写"}</p>
-            <p><strong>性别:</strong> {basicInfo.gender || "未填写"}</p>
+            <p><strong>一个词描述自己:</strong> {basicInfo.oneWordDescription || "未填写"}</p>
           </CardContent>
         </Card>
 
@@ -91,9 +91,9 @@ export default function TestPage() {
             />
             <Input 
               className="h-15" 
-              placeholder="输入性别测试" 
-              value={basicInfo.gender}
-              onChange={(e) => useProfileStore.getState().setBasicInfo({ gender: e.target.value })}
+              placeholder="输入一个词描述自己测试" 
+              value={basicInfo.oneWordDescription}
+              onChange={(e) => useProfileStore.getState().setBasicInfo({ oneWordDescription: e.target.value })}
             />
             <Input 
               className="h-15" 

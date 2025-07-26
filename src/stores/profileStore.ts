@@ -4,7 +4,7 @@ import { persist } from 'zustand/middleware';
 interface BasicInfo {
   name: string;
   password: string;
-  gender: string;
+  oneWordDescription: string;
   avatar: string | null;
 }
 
@@ -42,7 +42,7 @@ interface ProfileState {
 const initialBasicInfo: BasicInfo = {
   name: '',
   password: '',
-  gender: '',
+  oneWordDescription: '',
   avatar: null,
 };
 
