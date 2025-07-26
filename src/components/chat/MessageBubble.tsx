@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Image as ImageIcon } from 'lucide-react';
+import { Play, Pause, Image as ImageIcon } from 'lucide-react';
 
 export type MessageType = 'text' | 'voice' | 'image';
 
@@ -10,6 +10,7 @@ interface MessageBubbleProps {
   timestamp?: string;
   duration?: string; // for voice messages
   imageUrl?: string; // for image messages
+  audioUrl?: string; // for voice messages
 }
 
 export const MessageBubble: React.FC<MessageBubbleProps> = ({
@@ -19,14 +20,15 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
   timestamp,
   duration,
   imageUrl,
+  audioUrl,
 }) => {
   const isUser = sender === 'user';
 
   const baseClasses = "max-w-xs rounded-2xl p-4 shadow-sm";
-  const userClasses = isUser 
-    ? "bg-[#a8a8a8] text-white ml-auto" 
+  const userClasses = isUser
+    ? "bg-[#a8a8a8] text-white ml-auto"
     : "bg-[#a8a8a8] text-white";
-  
+
   const alignmentClasses = isUser ? "flex justify-end" : "flex justify-start";
 
   const renderContent = () => {
@@ -41,28 +43,65 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
           </div>
         );
 
-      case 'voice':
+      case 'voice': {
+        const [isPlaying, setIsPlaying] = React.useState(false);
+        const audioRef = React.useRef<HTMLAudioElement>(null);
+
+        const togglePlay = () => {
+          if (!audioUrl) return; // 无音频时忽略
+          const audio = audioRef.current;
+          if (!audio) return;
+          if (isPlaying) {
+            audio.pause();
+          } else {
+            audio.play();
+          }
+        };
+
+        React.useEffect(() => {
+          const audio = audioRef.current;
+          if (!audio) return;
+          const handleEnded = () => setIsPlaying(false);
+          const handlePlay = () => setIsPlaying(true);
+          const handlePause = () => setIsPlaying(false);
+          audio.addEventListener('ended', handleEnded);
+          audio.addEventListener('play', handlePlay);
+          audio.addEventListener('pause', handlePause);
+          return () => {
+            audio.removeEventListener('ended', handleEnded);
+            audio.removeEventListener('play', handlePlay);
+            audio.removeEventListener('pause', handlePause);
+          };
+        }, []);
+
         return (
           <div className={`${baseClasses} ${userClasses} flex items-center gap-3`}>
-            <button className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors">
-              <Play className="w-4 h-4 text-white ml-0.5" />
+            <button
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${audioUrl ? 'bg-white/20 hover:bg-white/30' : 'bg-gray-500/30 cursor-not-allowed'}`}
+              onClick={togglePlay}
+              disabled={!audioUrl}
+            >
+              {isPlaying ? (
+                <Pause className="w-4 h-4 text-white" />
+              ) : (
+                <Play className="w-4 h-4 text-white ml-0.5" />
+              )}
             </button>
             <div className="flex-1">
-              <div className="h-1 bg-white/30 rounded-full">
-                <div className="w-1/4 h-full bg-white rounded-full"></div>
-              </div>
-              <p className="text-xs mt-1">{duration || '0:00 / 0:00'}</p>
+              {audioUrl && <audio ref={audioRef} src={audioUrl} preload="metadata" />}
+              <p className="text-xs mt-1">{duration || ''}</p>
             </div>
           </div>
         );
+      }
 
       case 'image':
         return (
           <div className={`${baseClasses} ${userClasses} p-2`}>
             {imageUrl ? (
-              <img 
-                src={imageUrl} 
-                alt="Shared image" 
+              <img
+                src={imageUrl}
+                alt="Shared image"
                 className="rounded-lg max-w-full h-auto"
               />
             ) : (

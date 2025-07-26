@@ -9,6 +9,7 @@ interface MessageProps {
   content: string;
   duration?: string;
   imageUrl?: string;
+  audioUrl?: string;
   timestamp?: string;
 }
 
@@ -18,14 +19,15 @@ export const Message: React.FC<MessageProps> = ({
   content,
   duration,
   imageUrl,
+  audioUrl,
   timestamp,
 }) => {
   const isEgo = type === 'ego';
-  
-  const avatarClasses = isEgo 
-    ? 'w-10 h-10 rounded-full bg-white' 
+
+  const avatarClasses = isEgo
+    ? 'w-10 h-10 rounded-full bg-white'
     : 'w-10 h-10 rounded-full bg-gray-600';
-  
+
   const senderName = isEgo ? 'Ego' : 'Echo';
   const sender = isEgo ? 'user' : 'llm';
 
@@ -34,12 +36,13 @@ export const Message: React.FC<MessageProps> = ({
       <div className={avatarClasses}></div>
       <div>
         <p className="font-semibold mb-2">{senderName}</p>
-        <MessageBubble 
+        <MessageBubble
           type={bubbleType}
           content={content}
           sender={sender}
           duration={duration}
           imageUrl={imageUrl}
+          audioUrl={audioUrl}
           timestamp={timestamp}
         />
       </div>
