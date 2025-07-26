@@ -20,7 +20,7 @@ const mockMembers: Member[] = [
   {
     id: 1,
     name: "Alex Chen",
-    avatar: "/avatars/alex.png",
+    avatar: "/avatar.webp",
     quote: "代码改变世界，创意改变生活",
     mbti: "INTJ",
     description: "全栈开发者，专注AI与Web3的交叉创新",
@@ -29,7 +29,7 @@ const mockMembers: Member[] = [
   {
     id: 2,
     name: "Sarah Wang",
-    avatar: "/avatars/sarah.png",
+    avatar: "/avatar.webp",
     quote: "设计不仅是美学，更是解决问题的艺术",
     mbti: "ENFP",
     description: "UI/UX设计师，擅长用户研究和交互设计",
@@ -38,7 +38,7 @@ const mockMembers: Member[] = [
   {
     id: 3,
     name: "Mike Zhang",
-    avatar: "/avatars/mike.png",
+    avatar: "/avatar.webp",
     quote: "数据是新的石油，算法是新的引擎",
     mbti: "INTP",
     description: "机器学习工程师，专注NLP和推荐系统",
@@ -47,7 +47,7 @@ const mockMembers: Member[] = [
   {
     id: 4,
     name: "Emma Liu",
-    avatar: "/avatars/emma.png",
+    avatar: "/avatar.webp",
     quote: "产品经理的核心是用户价值的传递",
     mbti: "ENTJ",
     description: "产品经理，擅长需求分析和产品规划",

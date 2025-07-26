@@ -23,7 +23,7 @@ export default function MemberCard({ member }: MemberCardProps) {
         <div className="flex gap-4">
           {/* Avatar */}
           <Avatar className="my-auto h-15 w-15 flex-shrink-0">
-            <AvatarImage src={member.avatar} alt={member.name} />
+            <AvatarImage className="object-cover" src={member.avatar} alt={member.name} />
             <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-sm font-medium">
               {member.name.split(' ').map(n => n[0]).join('')}
             </AvatarFallback>
@@ -33,7 +33,9 @@ export default function MemberCard({ member }: MemberCardProps) {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
               <p className="text-sm text-gray-600 mb-2 line-clamp-1">
-                “{member.quote}”
+                <span className="text-2xl text-[#d9d9d9] italic font-serif">“ </span>
+                <span className="text-sm font-semibold">{member.quote}</span>
+                <span className="text-2xl text-[#d9d9d9] italic font-serif"> ”</span>
               </p>
             </div>
 
