@@ -58,18 +58,6 @@ const BottomNavigation = ({ className = "" }: BottomNavigationProps) => {
           <p>社群</p>
         </button>
       </div>
-
-      <div
-        className="bottom-0 left-0 right-0 h-40 -mb-30 rounded-t-2xl max-w-md"
-        style={{
-          background:
-            "linear-gradient(to top, #FFF 50%, rgba(92, 92, 92, 0.67))",
-        }}
-      >
-        <div className="text-center p-4 text-[#FFF] mb-4 text-sm">
-          向上滑动以探索Echo
-        </div>
-      </div>
     </>
   );
 };
